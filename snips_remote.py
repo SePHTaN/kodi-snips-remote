@@ -180,7 +180,7 @@ def search(slotvalue,slotname,json_d):
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     
     '''
-    serch id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
+    search id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
     if id not found: search(). if search finds only one(search "big bang" find "the big bang theroy"): main_controller with slotvalue=search() return.
     if found multiple (search "iron" find "iron man 1, iron man 2..." keep session alive and add media_selected to custom_data. 
     playlist size is limited to 20 items cause kodi keeps crashing while adding to much items
@@ -447,7 +447,7 @@ def on_message(client, userdata, msg):
             else:
                 #these intent will end the session after the function is called
                 if msg.topic == 'hermes/intent/'+snipsuser+'KodiPause':
-                    #hey snips papuse
+                    #hey snips pause
                     playing_state_old = 0
                     kodi.pause()
                     ausgabe('pause',1)
