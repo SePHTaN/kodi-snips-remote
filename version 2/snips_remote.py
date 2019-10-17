@@ -14,8 +14,8 @@ PORT = 1883
 snipsuser = ""
 
 #kodi  login data
-kodi_ip = ''
-kodi_user = ''
+kodi_ip = '192.168.1.73'
+kodi_user = 'kodi'
 kodi_pw = ''
 kodi_port = '8080'
 
@@ -216,7 +216,7 @@ def start_partymode():
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     
     '''
-    serch id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
+    search id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
     if id not found: search(). if search finds only one(search "big bang" find "the big bang theroy"): main_controller with slotvalue=search() return.
     if found multiple (search "iron" find "iron man 1, iron man 2..." keep session alive and add media_selected to custom_data. 
     playlist size is limited to 20 items cause kodi keeps crashing while adding to much items
