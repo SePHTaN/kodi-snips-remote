@@ -15,8 +15,8 @@ PORT = 1883
 snipsuser = ""
 
 #kodi  login data
-kodi_ip = ''
-kodi_user = ''
+kodi_ip = '192.168.1.73'
+kodi_user = 'kodi'
 kodi_pw = ''
 kodi_port = '8080'
 
