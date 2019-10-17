@@ -4,3 +4,4 @@ requests
 toml>=0.10.0
 json
 re
+snips-injection
