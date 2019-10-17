@@ -2,5 +2,4 @@
 hermes-python>=0.7
 requests
 toml>=0.10.0
-re
 snips-injection
