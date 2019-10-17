@@ -1,3 +1,7 @@
 [global]
 
 [secret]
+kodi_ip=
+kodi_user=
+kodi_pw=
+kodi_port='8080'
