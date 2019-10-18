@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import configparser
 import paho.mqtt.client as mqtt
 import json
