@@ -18,7 +18,7 @@ def ausgabe(text,mode):
     if mode < 2:
         ausgabe = " - "
     if mode >= debuglevel:
-        print(ausgabe + str(text))
+        print((ausgabe + str(text)))
     return
 def send(g_data,isfilter=0,all_data=""):
     headers = {
@@ -67,7 +67,8 @@ def check_connectivity():
 def filter_dict(d):
     #cause snips get confused with special characters this will replace all special chars with ' '
     #ausgabe('filter_dict',1)
-    for key, value in d.items():
+#    for key, value in d.items():
+    for key, value in list(d.items()):
         if isinstance(value, dict):
             d[key] = filter_dict(value)
         elif isinstance(value, list):
@@ -379,7 +380,7 @@ def init(kodi_user,kodi_pw,kodi_ip,kodi_port,_debuglevel):
     kodi_url = 'http://'+kodi_user+':'+kodi_pw+'@'+kodi_ip+':'+kodi_port+'/jsonrpc'
     debuglevel = _debuglevel
     if check_connectivity():
-        print("Kodi connected at {0}:{1}".format(kodi_ip, kodi_port))
+        print(("Kodi connected at {0}:{1}".format(kodi_ip, kodi_port)))
     else:
-        print("Kodi not found at {0}:{1}".format(kodi_ip, kodi_port))
+        print(("Kodi not found at {0}:{1}".format(kodi_ip, kodi_port)))
 
