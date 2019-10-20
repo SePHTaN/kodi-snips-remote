@@ -1,4 +1,5 @@
-# Bindings for the hermes protocol 
+# Bindings for the hermes protocol
 hermes-python>=0.7
 requests
+paho
 toml>=0.10.0
