@@ -15,7 +15,7 @@ HOST = '127.0.0.1'
 PORT = 1883
 
 #snips username with ':' or '__'
-snipsuser = ""
+snipsuser = "_snips-skills:_snips-skills"
 
 #kodi  login data
 kodi_ip = '192.168.1.73'
