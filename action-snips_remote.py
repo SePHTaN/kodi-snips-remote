@@ -23,7 +23,7 @@ kodi_user = 'kodi'
 kodi_pw = ''
 kodi_port = '8080'
 
-debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
+debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 def ausgabe(text,mode=3):
     # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
