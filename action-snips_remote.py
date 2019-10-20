@@ -15,7 +15,7 @@ HOST = '127.0.0.1'
 PORT = 1883
 
 #snips username with ':' or '__'
-snipsuser = "_snips-skills:_snips-skills"
+snipsuser = "_snips-skills:"
 
 #kodi  login data
 kodi_ip = '192.168.1.73'
@@ -37,7 +37,7 @@ def ausgabe(text,mode=3):
     if mode < 1:
         ausgabe = "   -- "
     if mode >= debuglevel:
-        print(ausgabe + str(text))
+        print((ausgabe + str(text)))
     return
 def build_tupel(json, filtervalue):
     #Build tupels and lists of json
@@ -243,7 +243,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
     return
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected to {0} with result code {1}".format(HOST, rc))
+    print(("Connected to {0} with result code {1}".format(HOST, rc)))
     client.subscribe("hermes/hotword/default/detected")
     client.subscribe('hermes/intent/#')
     client.subscribe('hermes/tts/sayFinished')
