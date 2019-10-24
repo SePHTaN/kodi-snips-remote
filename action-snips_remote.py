@@ -139,7 +139,7 @@ def start_session(session_type="action",text="",intent_filter="",customData=""):
         data = data + ',"intentFilter":null'
     if customData!="":
         cdata = ',"customData":"'+customData+'"'
-    client.publish("hermes/dialogueManager/startSession",'{"sideId": "default","init":'\
+    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
                    '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
     return
 
