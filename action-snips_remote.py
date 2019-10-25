@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt
 import json
 import kodi
 import toml
+import io
 from random import shuffle
 playing_state_old = 0
 is_in_session=0
