@@ -546,6 +546,7 @@ if __name__ == "__main__":
     if 'mqtt' in snips_config['snips-common'].keys():
         MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
     MQTT_ADDRESS = snips_config['snips-common']['mqtt'].split(':')
+    print(MQTT_ADDRESS)
     HOST = MQTT_ADDRESS[0]
     PORT = MQTT_ADDRESS[2]
     conf = read_configuration_file(CONFIG_INI)
