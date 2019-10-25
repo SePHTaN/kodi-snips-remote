@@ -29,7 +29,7 @@ debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher d
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
 
-class SnipsConfigParser(ConfigParser.SafeConfigParser):
+class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
         return {section : {option_name : option for option_name, option in self.items(section)} for section in self.sections()}
 
