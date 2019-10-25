@@ -544,11 +544,8 @@ def on_message(client, userdata, msg):
 if __name__ == "__main__":
     snips_config = toml.load('/etc/snips.toml')
     if 'mqtt' in snips_config['snips-common'].keys():
-        MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
-    MQTT_ADDRESS = snips_config['snips-common']['mqtt'].split(':')
-    print(MQTT_ADDRESS)
-    HOST = MQTT_ADDRESS[0]
-    PORT = MQTT_ADDRESS[2]
+        MQTT_HOST, port = snips_config['snips-common']['mqtt'].split(':') #MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
+        MQTT_PORT = int(port)
     conf = read_configuration_file(CONFIG_INI)
     kodi_ip = conf["secret"]["kodi_ip"].encode("utf-8")
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
@@ -558,5 +555,5 @@ if __name__ == "__main__":
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect(HOST, PORT, 60)
+client.connect(MQTT_HOST, MQTT_PORT, 60)
 client.loop_forever()
