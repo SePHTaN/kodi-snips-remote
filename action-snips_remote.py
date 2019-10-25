@@ -547,7 +547,7 @@ if __name__ == "__main__":
         MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
     MQTT_ADDRESS = snips_config['snips-common']['mqtt'].split(':')
     HOST = MQTT_ADDRESS[0]
-    PORT = MQTT_ADDRESS[3]
+    PORT = MQTT_ADDRESS[2]
     conf = read_configuration_file(CONFIG_INI)
     kodi_ip = conf["secret"]["kodi_ip"].encode("utf-8")
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
