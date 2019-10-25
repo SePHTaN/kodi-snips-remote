@@ -330,9 +330,12 @@ def on_message(client, userdata, msg):
             slotname = payload["slots"][0]["slotName"]
         name = payload["intent"]["intentName"]
         session_id= payload['sessionId']
+        site_id= payload['siteId']
         custom_data = payload['customData']
-        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}\n   -- "{4}" wiedergabe \n   -- "sessionId: {5} '\
-            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
+#        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}\n   -- "{4}" wiedergabe \n   -- "sessionId: {5} '\
+#            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
+        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n  -- "siteId":"{6}"'\
+            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0)
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
