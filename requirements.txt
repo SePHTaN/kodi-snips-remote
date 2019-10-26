@@ -2,4 +2,5 @@
 hermes-python>=0.7
 requests
 paho-mqtt
+future==0.16
 toml>=0.10.0
