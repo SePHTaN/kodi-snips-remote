@@ -552,9 +552,8 @@ if __name__ == "__main__":
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
     kodi_pw = conf["secret"]["kodi_pw"].encode("utf-8")
     kodi_port = conf["secret"]["kodi_port"].encode("utf-8")
-
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-client.connect(MQTT_HOST, MQTT_PORT, 60)
-client.loop_forever()
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(MQTT_HOST, MQTT_PORT, 60)
+    client.loop_forever()
