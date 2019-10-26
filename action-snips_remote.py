@@ -5,7 +5,7 @@ import configparser
 import paho.mqtt.client as mqtt
 import json
 import kodi
-import toml
+#import toml
 import io
 from random import shuffle
 playing_state_old = 0
@@ -13,8 +13,8 @@ is_in_session=0
 is_injecting=0
 
 #MQTT host and port
-HOST = '127.0.0.1'
-PORT = 1883
+MQTT_HOST = '127.0.0.1'
+MQTT_PORT = 1883
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
@@ -545,8 +545,8 @@ def on_message(client, userdata, msg):
 if __name__ == "__main__":
     snips_config = toml.load('/etc/snips.toml')
     if 'mqtt' in snips_config['snips-common'].keys():
-        MQTT_HOST, port = snips_config['snips-common']['mqtt'].split(':') #MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
-        MQTT_PORT = int(port)
+        MQTT_HOST, MQTT_PORT = snips_config['snips-common']['mqtt'].split(':') #MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
+        MQTT_PORT = int(MQTT_PORT)
     conf = read_configuration_file(CONFIG_INI)
     kodi_ip = conf["secret"]["kodi_ip"].encode("utf-8")
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
