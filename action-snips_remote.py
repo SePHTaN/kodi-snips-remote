@@ -13,19 +13,19 @@ is_in_session=0
 is_injecting=0
 
 #MQTT host and port
-MQTT_HOST = '127.0.0.1'
-MQTT_PORT = 1883
+MQTT_HOST = '' #'127.0.0.1'
+MQTT_PORT = '' #1883
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
 
 #kodi  login data
-kodi_ip = '192.168.1.73'
-kodi_user = 'kodi'
+kodi_ip = '' #'192.168.1.73'
+kodi_user = '' #'kodi'
 kodi_pw = ''
-kodi_port = '8080'
+kodi_port = '' #'8080'
 
-debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
+debuglevel = 3 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
@@ -39,9 +39,10 @@ def read_configuration_file(configuration_file):
     try:
         with io.open(configuration_file, encoding=CONFIGURATION_ENCODING_FORMAT) as f:
             conf_parser = SnipsConfigParser()
-            conf_parser.readfp(f)
+            conf_parser.read_file(f)
             return conf_parser.to_dict()
     except (IOError, configparser.Error) as e:
+        print(e)
         return dict()
 
 def ausgabe(text,mode=3):
