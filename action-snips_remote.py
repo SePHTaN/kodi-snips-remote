@@ -554,11 +554,11 @@ if __name__ == "__main__":
         MQTT_PORT = int(MQTT_PORT)
     print('MQTT_BROKER_ADDRESS:',MQTT_HOST,':',MQTT_PORT) #debug of HOST and PORT
     conf = read_configuration_file(CONFIG_INI)
-    kodi_ip = conf["secret"]["kodi_ip"]#.encode("utf-8")
-    kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
-    kodi_pw = conf["secret"]["kodi_pw"].encode("utf-8")
-    kodi_port = conf["secret"]["kodi_port"].encode("utf-8")
-    print('Kodi-IP: "{0}"\n  -- Kodi-Port: "{1}"\n  -- Kodi-User: "{2}"\n  -- Kodi-PW: "{3}"'.format(kodi_ip, kodi_port, kodi_user, kodi_pw))
+    kodi_ip = conf["secret"]["kodi_ip"]
+    kodi_user = conf["secret"]["kodi_user"]
+    kodi_pw = conf["secret"]["kodi_pw"]
+    kodi_port = conf["secret"]["kodi_port"]
+    print('Kodi-IP: "{0}"\nKodi-Port: "{1}"\nKodi-User: "{2}"\nKodi-PW: "{3}"'.format(kodi_ip, kodi_port, kodi_user, kodi_pw))
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
