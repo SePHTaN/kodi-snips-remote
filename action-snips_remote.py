@@ -14,16 +14,6 @@ is_injecting=0
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
 
-#MQTT host and port
-#MQTT_HOST = '' #'127.0.0.1'
-#MQTT_PORT = '' #1883
-
-#kodi  login data
-#kodi_ip = '' #'192.168.1.73'
-#kodi_user = '' #'kodi'
-#kodi_pw = ''
-#kodi_port = '' #'8080'
-
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
@@ -95,7 +85,7 @@ def start_navigator(session_id):
     global is_in_session
     is_in_session = 1
     client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
-    end_session(session_id,text="navigator gestartet")
+    end_session(session_id,text="Navigator gestartet")
     return
 
 def end_navigator(session_id=""):
@@ -148,7 +138,8 @@ def kodi_navigation_gui(slotvalue,session_id):
     else:
         window = slotvalue
     kodi.open_gui(window=window,filtervalue=filtervalue)
-    end_session(session_id)
+    if session_id != "":
+        end_session(session_id)
     return
 
 def start_session(session_type="action",text="",intent_filter="",customData=""):
@@ -200,13 +191,28 @@ def search(slotvalue,slotname,json_d):
             mediatype = 'tvshows'
         elif slotname =='movies':
             mediatype = 'movies'
-        elif slotname == 'artist' or slotname == 'albums':
+        elif slotname == 'artist':
             mediatype = 'artists'
+        elif slotname == 'albums':
+            mediatype ='albums'
         kodi.open_gui("", mediatype, slotvalue,isfilter=1)
     return(titles)
 
-def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
+def start_playlist(playlist, playlistid):
+    ausgabe("start_playlist",1)
+    kodi.stop()
+    kodi_navigation_gui("videoplaylist")
+    kodi.add_playlist(playlist,playlistid)
+    kodi.start_play(playlistid)
+    return
 
+def start_partymode():
+    kodi.stop()
+    kodi_navigation_gui("musicplaylist")
+    kodi.partymode()
+    return
+
+def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     '''
     search id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
     if id not found: search(). if search finds only one(search "big bang" find "the big bang theroy"): main_controller with slotvalue=search() return.
