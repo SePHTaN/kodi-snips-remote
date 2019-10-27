@@ -558,7 +558,7 @@ if __name__ == "__main__":
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
     kodi_pw = conf["secret"]["kodi_pw"].encode("utf-8")
     kodi_port = conf["secret"]["kodi_port"].encode("utf-8")
-    print('"Kodi-IP":"{0}"\n  -- "Kodi-Port":"{1}"\n  -- "Kodi-User":"{3}"\n  -- "Kodi-PW":"{4}"',).format(kodi_ip, kodi_port, kodi_user, kodi_pw))
+    print('"Kodi-IP":"{0}"\n  -- "Kodi-Port":"{1}"\n  -- "Kodi-User":"{2}"\n  -- "Kodi-PW":"{3}"',).format(kodi_ip, kodi_port, kodi_user, kodi_pw))
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
