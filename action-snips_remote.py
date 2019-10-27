@@ -122,7 +122,7 @@ def kodi_navigation_gui(slotvalue,session_id):
     elif slotvalue == 'videoaddon':
         window='programs'
         filtervalue="addons://sources/video/"
-    elif slotvalue == 'audiaddon':
+    elif slotvalue == 'audioaddon':
         window='programs'
         filtervalue="addons://sources/audio/"
     elif slotvalue == 'executableaddon':
