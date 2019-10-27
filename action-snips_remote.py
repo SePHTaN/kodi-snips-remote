@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import configparser
 import paho.mqtt.client as mqtt
 import json
@@ -12,18 +11,18 @@ playing_state_old = 0
 is_in_session=0
 is_injecting=0
 
-#MQTT host and port
-MQTT_HOST = '' #'127.0.0.1'
-MQTT_PORT = '' #1883
-
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
 
+#MQTT host and port
+#MQTT_HOST = '' #'127.0.0.1'
+#MQTT_PORT = '' #1883
+
 #kodi  login data
-kodi_ip = '' #'192.168.1.73'
-kodi_user = '' #'kodi'
-kodi_pw = ''
-kodi_port = '' #'8080'
+#kodi_ip = '' #'192.168.1.73'
+#kodi_user = '' #'kodi'
+#kodi_pw = ''
+#kodi_port = '' #'8080'
 
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
@@ -342,7 +341,7 @@ def on_message(client, userdata, msg):
         custom_data = payload['customData']
 #        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}\n   -- "{4}" wiedergabe \n   -- "sessionId: {5} '\
 #            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
-        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n  -- "siteId":"{6}"'\
+        ausgabe('"{0}"\n   -- "{1}":"{2}"\n   -- customData:"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n  -- siteId   :"{6}"'\
             .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0)
         if kodi.check_connectivity():
             #check if kodi is online else end session
@@ -548,11 +547,13 @@ def on_message(client, userdata, msg):
             end_session(session_id,text="")
 
 if __name__ == "__main__":
+    #Import MQTT Host and PORT from snips.toml
     snips_config = toml.load('/etc/snips.toml')
     if 'mqtt' in snips_config['snips-common'].keys():
         MQTT_HOST, MQTT_PORT = snips_config['snips-common']['mqtt'].split(':') #MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
         MQTT_PORT = int(MQTT_PORT)
     print('MQTT_BROKER_ADDRESS:',MQTT_HOST,':',MQTT_PORT) #debug of HOST and PORT
+    #Import Kodi IP,Port,User and Password from config.ini
     conf = read_configuration_file(CONFIG_INI)
     kodi_ip = conf["secret"]["kodi_ip"]
     kodi_user = conf["secret"]["kodi_user"]
