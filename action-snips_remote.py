@@ -25,7 +25,7 @@ kodi_user = '' #'kodi'
 kodi_pw = ''
 kodi_port = '' #'8080'
 
-debuglevel = 3 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
+debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
@@ -59,6 +59,7 @@ def ausgabe(text,mode=3):
     if mode >= debuglevel:
         print((ausgabe + str(text)))
     return
+
 def build_tupel(json, filtervalue):
     #Build tupels and lists of json
     ausgabe('build_tupel',1)
@@ -97,6 +98,7 @@ def start_navigator(session_id):
     client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
     end_session(session_id,text="navigator gestartet")
     return
+
 def end_navigator(session_id=""):
     #ends the session loop
     ausgabe('end_navigator',1)
@@ -108,12 +110,14 @@ def end_navigator(session_id=""):
         end_session(session_id,text="Navigator gestoppt")
     client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
     return
+
 def kodi_navigation_input(slotvalue,session_id):
     #for the kodi Input.ExecuteAction while in session loop.
     ausgabe('kodi_navigation_input',1)
     kodi.send_input(slotvalue)
     end_session(session_id)
     return
+
 def kodi_navigation_gui(slotvalue,session_id):
     #for the kodi GUI.ActivateWindow. prepares values before send
     ausgabe('kodi_navigation_gui',1)
@@ -147,6 +151,7 @@ def kodi_navigation_gui(slotvalue,session_id):
     kodi.open_gui(window=window,filtervalue=filtervalue)
     end_session(session_id)
     return
+
 def start_session(session_type="action",text="",intent_filter="",customData=""):
     #starts a snips session as notification or as action. also adds custom data to session
     ausgabe("start_session",1)
@@ -200,6 +205,7 @@ def search(slotvalue,slotname,json_d):
             mediatype = 'artists'
         kodi.open_gui("", mediatype, slotvalue,isfilter=1)
     return(titles)
+
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
 
     '''
@@ -263,7 +269,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
     return
 
 def on_connect(client, userdata, flags, rc):
-    print(("Connected to {0} with result code {1}".format(HOST, rc)))
+    print(("Connected to {0} with result code {1}".format(MQTT_HOST, rc)))
     client.subscribe("hermes/hotword/default/detected")
     client.subscribe('hermes/intent/#')
     client.subscribe('hermes/tts/sayFinished')
@@ -443,7 +449,6 @@ def on_message(client, userdata, msg):
                     parentdir, ein ordner nach oben
                     scrollup, scroll hoch, hoch scrollen, nach oben scrollen
                     scrolldown, sroll runter, runter scrollen, nach unten scrollen
-
                 '''
                 if payload['customData']=="kodi_navigation":
                     kodi_navigation_input(slotvalue,session_id)
@@ -466,7 +471,6 @@ def on_message(client, userdata, msg):
                     videoplaylist, video playlist, video wiedergabeliste
                     musicplaylist, musik playlist, musik wiedergabeliste
                     fullscreenvideo, zurück zum video, zurück zur wiedergabe, zurück zum film, zurück zur serie, zurück zur folge
-
                 '''
                 kodi_navigation_gui(slotvalue,session_id)
 
@@ -548,11 +552,13 @@ if __name__ == "__main__":
     if 'mqtt' in snips_config['snips-common'].keys():
         MQTT_HOST, MQTT_PORT = snips_config['snips-common']['mqtt'].split(':') #MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
         MQTT_PORT = int(MQTT_PORT)
+    print('MQTT_BROKER_ADDRESS:',MQTT_HOST,':',MQTT_PORT) #debug of HOST and PORT
     conf = read_configuration_file(CONFIG_INI)
     kodi_ip = conf["secret"]["kodi_ip"].encode("utf-8")
     kodi_user = conf["secret"]["kodi_user"].encode("utf-8")
     kodi_pw = conf["secret"]["kodi_pw"].encode("utf-8")
     kodi_port = conf["secret"]["kodi_port"].encode("utf-8")
+    print('"Kodi-IP":"{0}"\n  -- "Kodi-Port":"{1}"\n  -- "Kodi-User":"{3}"\n  -- "Kodi-PW":"{4}"',).format(kodi_ip, kodi_port, kodi_user, kodi_pw))
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
