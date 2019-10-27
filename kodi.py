@@ -197,8 +197,8 @@ def add_playlist(playlist,playlistid):
     send(data,1)
     return
 def insert_playlist(tupel,types, playlistid):
-    clear_playlist(playlistid)
     ausgabe('insert_playlist',1)
+    clear_playlist(playlistid)
     num=0
     data = "["
     for item in tupel:
