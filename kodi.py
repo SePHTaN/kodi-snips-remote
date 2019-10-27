@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import json
 import requests
 import re
@@ -36,6 +35,8 @@ def send(g_data,isfilter=0,all_data=""):
         #ausgabe(json_obj,2)
         json_data = json.loads(json_obj)
         #ausgabe(json_data,2)
+        if all_data != "":
+            return json_data
         for item in json_data:
             if item == 'result':
                 #ausgabe('send is good',2)
@@ -48,13 +49,9 @@ def send(g_data,isfilter=0,all_data=""):
                 ausgabe('data: '+data,2)
                 ausgabe(json_data,2)
                 return
-    except: 
-        ausgabe('server nicht erreichbar',2)
+    except:
+        ausgabe('server nicht erreichbar'+kodi_url ,2)
         return
-    
-    """except errorMeldung:
-        ausgabe('es kam ein fehler zurueck',2)
-        raise"""
     return
 def check_connectivity():
     ausgabe('check_connectivity',1)
@@ -63,7 +60,6 @@ def check_connectivity():
     data = data_method + data_prop
     json_data=send(data,1)
     return json_data
-
 def filter_dict(d):
     #cause snips get confused with special characters this will replace all special chars with ' '
     #ausgabe('filter_dict',1)
@@ -76,7 +72,6 @@ def filter_dict(d):
         else:
             d[key]=re.sub('[^A-Za-z0-9 ]+', ' ', str(value))
     return d
-
 def get_movies():
     ausgabe('get_movies',1)
     data_method= '"method":"VideoLibrary.GetMovies"'
@@ -84,15 +79,42 @@ def get_movies():
     data = data_method + data_prop
     json_data=send(data)
     return(json_data['movies'])
-
 def get_shows():
     ausgabe('get_shows',1)
     data_method= '"method":"VideoLibrary.GetTVShows"'
-    data_prop = ',"params":{"properties":["title","file","lastplayed"],"sort":{"method":"none","order":"ascending"}}'
+    data_prop = ',"params":{"properties":["title"],"sort":{"method":"none","order":"ascending"}}'
     data = data_method + data_prop
     json_data=send(data)
     return(json_data['tvshows'])
-
+def get_tv_shows(tag):
+    ausgabe('get_tv_shows',1)
+    data_method= '"method":"VideoLibrary.GetTVShows"'
+    data_prop = ',"params":{"properties":["tag"],"sort":{"method":"none","order":"ascending"},'\
+                '"filter":{"tag":"'+tag+'"}}'
+    data = data_method + data_prop
+    json_data=send(data,1)
+    return(json_data['tvshows'])
+def get_tv_shows_episodeids(tupel):
+    ausgabe('get_tv_shows_id',1)
+    num=0
+    data = "["
+    for item in tupel:
+        data_head = '{"id":"'+str(item)+'","jsonrpc":"2.0",'
+        data_method= '"method":"VideoLibrary.GetEpisodes"'
+        data_prop = ',"params":{"tvshowid":'+str(item)+','\
+                    '"properties":[],'\
+                    '"sort": { "order": "ascending", "method": "label"}}}'
+                    #'"limits":{"end":20,"start":0}}}'
+        data = data + data_head + data_method + data_prop
+        if num+1 < len(tupel):
+            data = data + ', '
+        num =num+1
+    data = data + "]"
+    json_data=send("",1,data)
+    #ausgabe(json_data,3)
+    return(json_data)
+#test = [2, 9, 15, 19, 22, 39, 48, 52, 53, 65, 66, 68, 69, 70, 71, 72]
+#get_tv_shows_episodeids(test)
 def get_genre():
     ausgabe('get_genre',1)
     data_method= '"method":"AudioLibrary.GetGenres"'
@@ -130,7 +152,6 @@ def get_songs_by(filterkey,filtervalue):
     data = data_method + data_prop
     json_data=send(data)
     return(json_data['songs'])
-
 def find_title_id(titlename,searchkey,id_slot_name,json_data):
     ausgabe('find_title_id',1)
     titleid=0
@@ -139,7 +160,6 @@ def find_title_id(titlename,searchkey,id_slot_name,json_data):
             titleid = item[id_slot_name]
             break
     return(titleid)
-
 def find_title(titlename,json_data):
     ausgabe('find_title',1)
     title_found =[]
@@ -147,39 +167,40 @@ def find_title(titlename,json_data):
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
     return(title_found)
-
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
     data_method= '"method":"VideoLibrary.GetEpisodes"'
     data_prop = ',"params":{"tvshowid":'+str(id)+',' \
                 '"filter": {"field": "playcount", "operator": "lessthan", "value": "1"},' \
-                '"properties":["title","file","lastplayed","season","playcount"], ' \
+                '"properties":["title"], ' \
                 '"sort": { "order": "ascending", "method": "label" }'\
                 '}'
     data = data_method + data_prop
     json_data=send(data,1)
     return(json_data)
-
 def get_episodes_all(id):
     ausgabe('add_episodes_all',1)
     data_method= '"method":"VideoLibrary.GetEpisodes"'
     data_prop = ',"params":{"tvshowid":'+str(id)+','\
-                '"properties":["title","file","lastplayed","season","playcount"],'\
+                '"properties":["title"],'\
                 '"sort": { "order": "ascending", "method": "label" }'\
                 '}'
     data = data_method + data_prop
     json_data=send(data,1)
     return(json_data)
-
-def insert_playlist(tupel,types, playlistid):
-    ausgabe('insert_playlist',1)
-    data_method= '"method":"Playlist.Clear"'
-    data_prop = ',"params":{"playlistid":1}'
+def add_playlist(playlist,playlistid):
+    ausgabe("add_playlist",1)
+    clear_playlist(playlistid)
+    data_method= '"method":"Playlist.Add"'
+    data_prop = ',"params":{"playlistid": '+str(playlistid)+',"item": {"recursive": true,"directory": "special://profile/playlists/'+playlist+'"}}'
     data = data_method + data_prop
     send(data,1)
-    num=0    
+    return
+def insert_playlist(tupel,types, playlistid):
+    clear_playlist(playlistid)
+    ausgabe('insert_playlist',1)
+    num=0
     data = "["
-    
     for item in tupel:
         data_head = '{"id":"'+str(num+100)+'","jsonrpc":"2.0",'
         data_method= '"method":"Playlist.Insert"'
@@ -190,8 +211,17 @@ def insert_playlist(tupel,types, playlistid):
         if num+1 < len(tupel):
             data = data + ', '
         num =num+1
-    data = data + "]"    
+    data = data + "]"
     send("",1,data)
+    return
+def clear_playlist(playlistid):
+    ausgabe('clear_playlist',1)
+    #ausgabe(playlistid,2)
+    data_method = '"method":"Playlist.Clear"'
+    data_prop = ',"params":{"playlistid":'+str(playlistid)+'}'
+    data = data_method + data_prop
+    #ausgabe(data,2)
+    send(data,1)
     return
 def get_active_player():
     ausgabe('get_active_player',1)
@@ -199,23 +229,21 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1)
-    
     if active_json != [] and active_json:
         return(active_json[0])
     else:
         return(active_json)
-
 def get_properties():
     ausgabe('get_properties',1)
     player_id = get_active_player()
     if player_id:
-        data = '{"jsonrpc":"2.0",'\
-               '"method":"Player.GetProperties",'\
-               '"params":['+str(player_id['playerid'])+',["playlistid","speed","position","totaltime",'\
-               '"time","percentage","shuffled","repeat","canrepeat","canshuffle",'\
-               '"canseek","partymode"]],'\
-               '"id":1387}'
-        json = send("",1,data)
+        ausgabe('get_active_player',1)
+        data_method= '"method":"Player.GetProperties"'
+        data_prop = ',"params":['+str(player_id['playerid'])+',["playlistid","speed","position","totaltime",'\
+                   '"time","percentage","shuffled","repeat","canrepeat","canshuffle",'\
+                   '"canseek","partymode"]]'
+        data = data_method + data_prop
+        json = send(data,1)
         return(json)
     return
 def get_running_state():
@@ -269,12 +297,31 @@ def stop():
         data = data_method + data_prop
         send(data,1)
     return
+def partymode():
+    ausgabe('partymode',1)
+    data_method= '"method":"Player.SetPartymode"'
+    data_prop = ',"params":[0,true]'
+    data = data_method + data_prop
+    send(data,1)
+    return
 def subtitles(state):
     ausgabe('subtitles',1)
+    setstate = "off"
+    if state == "true":
+        setstate = "on"
     data_method= '"method":"Player.SetSubtitle"'
     data_prop = ',"params":[1,"'+state+'"]'
     data = data_method + data_prop
     send(data,1)
+    return
+def shuffle(state):
+    ausgabe("shuffle",1)
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Player.SetShuffle"'
+        data_prop = ',"params":['+str(json_data['playerid'])+','+state+']'
+        data = data_method + data_prop
+        send(data,1)
     return
 def next_media():
     ausgabe('next_media',1)
@@ -294,40 +341,23 @@ def previous_media():
         data = data_method + data_prop
         send(data,1)
     return
-def shuffle_on(playlistid=5):
-    ausgabe('shuffle_on',1)
-    if playlistid == 5:
-        json_data = get_active_player()
-        if json_data != [] and json_data:
-            playlistid = json_data['playerid']
-    data_method= '"method":"Player.SetShuffle"'
-    data_prop = ',"params":['+str(playlistid)+',true]'
-    data = data_method + data_prop
-    send(data,1)
-    return
-def shuffle_off(playlistid=5):
-    ausgabe('shuffle_off',1)
-    if playlistid == 5:
-        json_data = get_active_player()
-        if json_data != [] and json_data:
-            playlistid = json_data['playerid']
-    data_method= '"method":"Player.SetShuffle"'
-    data_prop = ',"params":['+str(playlistid)+',false]'
-    data = data_method + data_prop
-    send(data,1)
-    return
-
 def get_gui():
     data_method= '"method":"GUI.GetProperties"'
     data_prop = ',"params":{"properties":["currentwindow","currentcontrol"]}'
     data = data_method + data_prop
-    ausgabe(send(data,1),3)
-    return
+    window = send(data,1)
+    return(window['currentwindow'])
 def introspect():
     data_method= '"method":"JSONRPC.Introspect"'
     data_prop = ''
     data = data_method + data_prop
     ausgabe(send(data,1),3)
+    return
+def show_notification(text):
+    data_method= '"method":"GUI.ShowNotification"'
+    data_prop = ',"params":{"title":"Notification","message": "'+text+'"}'
+    data = data_method + data_prop
+    send(data,1)
     return
 def open_gui(window="",mediatype="", filtervalue="",isfilter=0):
     ausgabe('open_gui',1)
@@ -358,10 +388,8 @@ def open_gui(window="",mediatype="", filtervalue="",isfilter=0):
                     '%22%5d%7d%5d%7d%2c%22type%22%3a%22'\
                     +mediatype+\
                     '%22%7d"]'
-        
     elif filtervalue != "":
         parameter = ',"parameters":["'+filtervalue+'"]'
-        
     data_method= '"method":"GUI.ActivateWindow"'
     data_prop = ',"params":{"window": "'+window+'"'\
                 +parameter+ '}'
@@ -372,7 +400,8 @@ def send_input(slotvalue):
     data_method= '"method":"Input.ExecuteAction"'
     data_prop = ',"params":["'+slotvalue+'"]'
     data = data_method + data_prop
-    ausgabe(send(data,1),3)
+    #ausgabe(send(data,1),3)
+    send(data,1)
     return
 def init(kodi_user,kodi_pw,kodi_ip,kodi_port,_debuglevel):
     global kodi_url
@@ -383,4 +412,3 @@ def init(kodi_user,kodi_pw,kodi_ip,kodi_port,_debuglevel):
         print(("Kodi connected at {0}:{1}".format(kodi_ip, kodi_port)))
     else:
         print(("Kodi not found at {0}:{1}".format(kodi_ip, kodi_port)))
-
