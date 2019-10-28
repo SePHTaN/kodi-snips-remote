@@ -299,10 +299,13 @@ def stop():
     return
 def partymode():
     ausgabe('partymode',1)
-    data_method= '"method":"Player.SetPartymode"'
-    data_prop = ',"params":[0,true]'
-    data = data_method + data_prop
-    send(data,1)
+    json_data = get_active_player() #test
+    if json_data != [] and json_data: #test
+        data_method= '"method":"Player.SetPartymode"'
+        #data_prop = ',"params":[0,true]'
+        data_prop = ',"params":['+str(json_data['playerid'])+',true]' #test
+        data = data_method + data_prop
+        send(data,1)
     return
 def subtitles(state):
     ausgabe('subtitles',1)
@@ -338,6 +341,43 @@ def previous_media():
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
         data_prop = ',"params":['+str(json_data['playerid'])+',"previous"]'
+        data = data_method + data_prop
+        send(data,1)
+    return
+def lauter():
+    ausgabe('lautstärke_hoch',1)
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Application.SetVolume"'
+        data_prop = ',"params":{"volume":"increment"}'
+        data = data_method + data_prop
+        send(data,1)
+    return
+def leiser():
+    ausgabe('lautstärke_runter',1)
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Application.SetVolume"'
+        data_prop = ',"params":{"volume":"decrement"}'
+        data = data_method + data_prop
+        send(data,1)
+    return
+def volume(vol):
+    ausgabe('lautstärke_setzen',1)
+    vol= vol * 100
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Application.SetVolume"'
+        data_prop = ',"params":{"volume":"'+vol+'"}'
+        data = data_method + data_prop
+        send(data,1)
+    return
+def mute():
+    ausgabe('lautstärke_an-aus',1)
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Application.SetMute"'
+        data_prop = ',"params":{"mute":"toggle"}'
         data = data_method + data_prop
         send(data,1)
     return
