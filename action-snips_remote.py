@@ -547,6 +547,22 @@ def on_message(client, userdata, msg):
                     #hey snips play previous
                     kodi.previous_media()
                     ausgabe('previous_media',1)
+                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLauter':
+                    #hey snips lauter, kodi lauter, lautstärke hoch
+                    kodi.lauter()
+                    ausgabe('lautstärke_hoch',1)
+                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLeiser':
+                    #hey snips leiser, nicht so laut, lautstärke runter
+                    kodi.leiser()
+                    ausgabe('lautstärke_runter',1)
+                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiSetVolume':
+                    #hey snips leiser, nicht so laut, lautstärke runter
+                    kodi.volume(slotvalue)
+                    ausgabe('lautstärke_setzen',1)
+                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiMute':
+                    #hey snips leiser, nicht so laut, lautstärke runter
+                    kodi.mute()
+                    ausgabe('lautstärke_an-aus',1)
 # Old Shuffle Functioncalls
 #                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiShuffleON':
 #                    #hey snips set suffle on
