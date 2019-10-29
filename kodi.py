@@ -6,7 +6,7 @@ import re
 kodi_url = ''
 debuglevel =0
 playlist_size =20
-def ausgabe(text,mode):
+def ausgabe(text,mode,caller=""): # caller added for debugging
     '''
     main function name -mode= 1
     debugs -mode= >=2
@@ -17,7 +17,7 @@ def ausgabe(text,mode):
     if mode < 2:
         ausgabe = " - "
     if mode >= debuglevel:
-        print((ausgabe + str(text)))
+        print((ausgabe + caller + str(text)))
     return
 def send(g_data,isfilter=0,all_data=""):
     headers = {
@@ -99,7 +99,7 @@ def get_tv_shows_episodeids(tupel):
     num=0
     data = "["
     for item in tupel:
-        data_head = '{"id":"'+str(item)+'","jsonrpc":"2.0",'
+        data_head = '{"id":"'+str(item)+'","jsonrpc":"2.0",' # falsch? prüfen
         data_method= '"method":"VideoLibrary.GetEpisodes"'
         data_prop = ',"params":{"tvshowid":'+str(item)+','\
                     '"properties":[],'\
@@ -303,7 +303,7 @@ def partymode():
     if json_data != [] and json_data: #test
         data_method= '"method":"Player.SetPartymode"'
         #data_prop = ',"params":[0,true]'
-        data_prop = ',"params":['+str(json_data['playerid'])+',true]' #test
+        data_prop = ',"params":['+str(json_data['playerid'])+',"partymode":,true]' #test
         data = data_method + data_prop
         send(data,1)
     return
@@ -364,7 +364,7 @@ def leiser():
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
-    vol= vol * 100
+    vol= int(vol * 100)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
