@@ -406,7 +406,7 @@ def show_notification(text):
     data_method= '"method":"GUI.ShowNotification"'
     data_prop = ',"params":{"title":"Notification","message": "'+text+'"}'
     data = data_method + data_prop
-    send(data,1)
+    send(data,1,'','show_notification')
     return
 def open_gui(window="",mediatype="", filtervalue="",isfilter=0):
     ausgabe('open_gui',1)
