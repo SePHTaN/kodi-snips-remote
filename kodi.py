@@ -30,12 +30,12 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
     else:
         data = all_data
     try:
-        ausgabe(caller+':'+data)
+        #ausgabe(caller+':'+data)
         response = requests.post(kodi_url, headers=headers, data=data)
         json_obj= response.text
-        ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
+        #ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
         json_data = json.loads(json_obj)
-        ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
+        #ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
         if all_data != "":
             return json_data
         for item in json_data:
@@ -51,7 +51,7 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
                 ausgabe(json_data,2)
                 return
     except:
-        ausgabe('server nicht erreichbar'+kodi_url ,2)
+        ausgabe('server nicht erreichbar: '+kodi_url ,2)
         return
     return
 def check_connectivity():
