@@ -13,7 +13,7 @@ is_injecting=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
-debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
+debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
