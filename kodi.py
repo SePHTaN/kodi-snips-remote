@@ -351,7 +351,7 @@ def previous_media():
         data_method= '"method":"Player.GoTo"'
         data_prop = ',"params":['+str(json_data['playerid'])+',"previous"]'
         data = data_method + data_prop
-        send(data,1'','previous_media')
+        send(data,1,'','previous_media')
     return
 def lauter():
     ausgabe('lautstärke_hoch',1)
@@ -360,7 +360,7 @@ def lauter():
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"increment"}'
         data = data_method + data_prop
-        send(data,1'','lauter')
+        send(data,1,'','lauter')
     return
 def leiser():
     ausgabe('lautstärke_runter',1)
@@ -369,7 +369,7 @@ def leiser():
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"decrement"}'
         data = data_method + data_prop
-        send(data,1'','leiser')
+        send(data,1,'','leiser')
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
@@ -379,7 +379,7 @@ def volume(vol):
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"'+vol+'"}'
         data = data_method + data_prop
-        send(data,1'','volume')
+        send(data,1,'','volume')
     return
 def mute():
     ausgabe('lautstärke_an-aus',1)
@@ -388,7 +388,7 @@ def mute():
         data_method= '"method":"Application.SetMute"'
         data_prop = ',"params":{"mute":"toggle"}'
         data = data_method + data_prop
-        send(data,1'','mute')
+        send(data,1,'','mute')
     return
 def get_gui():
     data_method= '"method":"GUI.GetProperties"'
