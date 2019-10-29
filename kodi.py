@@ -30,7 +30,7 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
     else:
         data = all_data
     try:
-        ausgabe(caller+':'+data)
+        ausgabe(caller+':'+data,1)
         response = requests.post(kodi_url, headers=headers, data=data)
         json_obj= response.text
         #ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
