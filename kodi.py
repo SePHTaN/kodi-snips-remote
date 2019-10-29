@@ -30,12 +30,12 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
     else:
         data = all_data
     try:
-        ausgabe(caller+':'+data,1)
+        ausgabe(caller+': '+data,1)
         response = requests.post(kodi_url, headers=headers, data=data)
         json_obj= response.text
-        #ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
+        ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
         json_data = json.loads(json_obj)
-        #ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
+        ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
         if all_data != "":
             return json_data
         for item in json_data:
@@ -59,7 +59,7 @@ def check_connectivity():
     data_method= '"method":"JSONRPC.Ping"'
     data_prop = ',"params":{}'
     data = data_method + data_prop
-    json_data=send(data,1)
+    json_data=send(data,1,'','check_connectivity')
     return json_data
 def filter_dict(d):
     #cause snips get confused with special characters this will replace all special chars with ' '
