@@ -193,6 +193,27 @@ def search(slotvalue,slotname,json_d):
             mediatype ='albums'
         kodi.open_gui("", mediatype, slotvalue,isfilter=1)
     return(titles)
+def start_tv():
+    ausgabe("start_tv",1)
+    kodi.stop()
+    kodi_navigation_gui("videoplaylist")
+    showsid_tupel= build_tupel(kodi.get_tv_shows("tv"),"tvshowid")
+    ausgabe(len(showsid_tupel))
+    #kodi.show_notification(len(showsid_tupel)+" Serien gefunden. Episoden werden gesucht")
+    id_tupel =[]
+    kodi.show_notification("Programm wird geladen")
+    kodi.clear_playlist("1")
+    json_data = kodi.get_tv_shows_episodeids(showsid_tupel)
+    for item in json_data:
+        if item['result']['limits']['total'] != 0:
+            id_tupel_temp = build_tupel(item['result']['episodes'], "episodeid")
+            shuffle(id_tupel_temp)
+            id_tupel = id_tupel + [id_tupel_temp[0]]+ [id_tupel_temp[1]]+ [id_tupel_temp[2]]+ [id_tupel_temp[3]]
+    ausgabe(len(id_tupel))
+    shuffle(id_tupel)
+    kodi.insert_playlist(id_tupel,'episodeid', '1')
+    kodi.start_play('1')
+    return
 def start_playlist(playlist, playlistid):
     ausgabe("start_playlist",1)
     kodi.stop()
@@ -629,7 +650,9 @@ def on_message(client, userdata, msg):
                     intent: play_tv
                     spielt eine vorgegebene PLayliste von Serien ab
                     die playliste heisst tv.xsp
+                    alternativ start_tv spiele mit tv getaggte Serien ab?
                     '''
+                    #start_tv()
                     start_playlist("video/tv.xsp", 1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'kodi_wakeup':
                     '''
