@@ -35,7 +35,7 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
         json_obj= response.text
         ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
         json_data = json.loads(json_obj)
-        ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
+        #ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
         if all_data != "":
             return json_data
         for item in json_data:
