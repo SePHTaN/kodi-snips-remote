@@ -600,7 +600,7 @@ def on_message(client, userdata, msg):
                     slotvalue: on, off +synonyms
                     '''
                     kodi.shuffle(slotvalue)
-                    ausgabe('shuffle_on',1)
+                    ausgabe('shuffle',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'kodiSubtitles':
                     '''
                     hey snips set subtitles off
