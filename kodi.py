@@ -165,6 +165,7 @@ def find_title_id(titlename,searchkey,id_slot_name,json_data):
         if item[searchkey].lower()==titlename.lower():
             titleid = item[id_slot_name]
             break
+    ausgabe('title-id:'+titleid,1)
     return(titleid)
 def find_title(titlename,json_data):
     ausgabe('find_title',1)
@@ -172,6 +173,7 @@ def find_title(titlename,json_data):
     for item in json_data:
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
+    ausgabe('title: '+title_found,1)
     return(title_found)
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
@@ -378,7 +380,7 @@ def volume(vol):
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":{"volume":"'+vol+'"}'
+        data_prop = ',"params":{"volume":'+vol+'}'
         data = data_method + data_prop
         send(data,1,'','volume')
     return
