@@ -165,7 +165,7 @@ def find_title_id(titlename,searchkey,id_slot_name,json_data):
         if item[searchkey].lower()==titlename.lower():
             titleid = item[id_slot_name]
             break
-    ausgabe('title-id:'+titleid,1)
+    ausgabe('"title-id:"+titleid',1)
     return(titleid)
 def find_title(titlename,json_data):
     ausgabe('find_title',1)
@@ -173,7 +173,7 @@ def find_title(titlename,json_data):
     for item in json_data:
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
-    ausgabe('title: '+title_found,1)
+    ausgabe('"title-found: "'+title_found,1)
     return(title_found)
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
@@ -202,7 +202,7 @@ def add_playlist(playlist,playlistid):
     ausgabe("add_playlist",1)
     clear_playlist(playlistid)
     data_method= '"method":"Playlist.Add"'
-    data_prop = ',"params":{"playlistid": '+str(playlistid)+',"item": {"recursive": true,"directory": "special://profile/playlists/'+playlist+'"}}'
+    data_prop = ',"params":{"playlistid":'+str(playlistid)+',"item": {"recursive": true,"directory": "special://profile/playlists/'+playlist+'"}}'
     data = data_method + data_prop
     send(data,1)
     return
@@ -286,7 +286,7 @@ def resume():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
-        data_prop = ',"params":['+str(json_data['playerid'])+',true]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":true]'
         data = data_method + data_prop
         send(data,1,'','resume')
     return
@@ -295,7 +295,7 @@ def pause():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
-        data_prop = ',"params":['+str(json_data['playerid'])+',false]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":false}'
         data = data_method + data_prop
         send(data,1,'','pause')
     return
@@ -304,7 +304,7 @@ def stop():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.Stop"'
-        data_prop = ',"params":['+str(json_data['playerid'])+']'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+'}'
         data = data_method + data_prop
         send(data,1,'','stop')
     return
@@ -314,7 +314,7 @@ def partymode():
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetPartymode"'
         #data_prop = ',"params":[0,true]'
-        data_prop = ',"params":['+str(json_data['playerid'])+',"partymode":,true]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
         data = data_method + data_prop
         send(data,1,'','partymode')
     return
@@ -323,17 +323,19 @@ def subtitles(state):
     setstate = "off"
     if state == "true":
         setstate = "on"
-    data_method= '"method":"Player.SetSubtitle"'
-    data_prop = ',"params":[1,"'+state+'"]'
-    data = data_method + data_prop
-    send(data,1,'','subtitles')
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Player.SetSubtitle"'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"subtitle":'+setstate+'}'
+        data = data_method + data_prop
+        send(data,1,'','subtitles')
     return
 def shuffle(state):
     ausgabe("shuffle",1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetShuffle"'
-        data_prop = ',"params":['+str(json_data['playerid'])+','+state+']'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"shuffle":'+state+'}'
         data = data_method + data_prop
         send(data,1,'','shuffle')
     return
@@ -342,7 +344,7 @@ def next_media():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
-        data_prop = ',"params":['+str(json_data['playerid'])+',"next"]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"to":"next"}'
         data = data_method + data_prop
         send(data,1,'','next_media')
     return
@@ -351,7 +353,7 @@ def previous_media():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
-        data_prop = ',"params":['+str(json_data['playerid'])+',"previous"]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"to":"previous"}'
         data = data_method + data_prop
         send(data,1,'','previous_media')
     return
