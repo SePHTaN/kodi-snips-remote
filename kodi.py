@@ -237,7 +237,7 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
-    ausgabe('active_json:'+active_json+' -- active_json[0]:'+active_json[0])
+    ausgabe('active_json:'+active_json,1)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
@@ -373,7 +373,8 @@ def leiser():
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
-    vol= int(vol * 100)
+    vol = vol*100
+    print vol
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
