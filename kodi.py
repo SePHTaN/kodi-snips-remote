@@ -312,7 +312,8 @@ def partymode():
     #json_data = get_active_player()
     #if json_data != [] and json_data:
     data_method= '"method":"Player.SetPartymode"'
-    data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
+    #data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
+    data_prop = ',"params":{"playerid":"1","partymode":true}'
     data = data_method + data_prop
     send(data,1,'','partymode')
     return
@@ -366,25 +367,25 @@ def lauter():
     return
 def leiser():
     ausgabe('lautstärke_runter',1)
-    json_data = get_active_player()
-    print(json_data)
-    if json_data != [] and json_data:
-        data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":{"volume":"decrement"}'
-        data = data_method + data_prop
-        send(data,1,'','leiser')
+    #json_data = get_active_player()
+    #print(json_data)
+    #if json_data != [] and json_data:
+    data_method= '"method":"Application.SetVolume"'
+    data_prop = ',"params":{"volume":"decrement"}'
+    data = data_method + data_prop
+    send(data,1,'','leiser')
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
     vol = int(float(vol)*100)
-    json_data = get_active_player()
-    print(json_data)
-    if json_data != [] and json_data:
-        data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":{"volume":'+vol+'}'
-        data = data_method + data_prop
-        print(vol)
-        send(data,1,'','volume')
+    #json_data = get_active_player()
+    #print(json_data)
+    #if json_data != [] and json_data:
+    data_method= '"method":"Application.SetVolume"'
+    data_prop = ',"params":{"volume":'+vol+'}'
+    data = data_method + data_prop
+    print(vol)
+    send(data,1,'','volume')
     return
 def mute():
     ausgabe('lautstärke_an-aus',1)
