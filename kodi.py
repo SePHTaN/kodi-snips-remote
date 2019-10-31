@@ -164,7 +164,7 @@ def find_title_id(titlename,searchkey,id_slot_name,json_data):
         if item[searchkey].lower()==titlename.lower():
             titleid = item[id_slot_name]
             break
-    ausgabe(titleid,1,'','title-id: ')
+    ausgabe(titleid,1)
     return(titleid)
 def find_title(titlename,json_data):
     ausgabe('find_title',1)
