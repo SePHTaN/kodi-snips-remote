@@ -35,7 +35,6 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
         json_obj= response.text
         ausgabe('Send: Response JSON-OBJ = ' + json_obj,2) #added "Send JSON-OBJ = " +
         json_data = json.loads(json_obj)
-        #ausgabe('Send: Response JSON-DATA= ' + json_data,2) #added "Send JSON-DATA= " +
         if all_data != "":
             return json_data
         for item in json_data:
@@ -173,7 +172,7 @@ def find_title(titlename,json_data):
     for item in json_data:
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
-    ausgabe(title_found,1,'','title-found: ')
+    ausgabe(title_found,1)
     return(title_found)
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
