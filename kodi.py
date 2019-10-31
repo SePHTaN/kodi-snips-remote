@@ -238,7 +238,7 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
-    print('Result:',active_json)
+    #print('Result:',active_json)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
@@ -247,7 +247,7 @@ def get_properties():
     ausgabe('get_properties',1)
     player_id = get_active_player()
     if player_id:
-        ausgabe('player_id:"{0}"'.format(player_id),1)
+        #ausgabe('player_id:"{0}"'.format(player_id),1)
         data_method= '"method":"Player.GetProperties"'
         data_prop = ',"params":['+str(player_id['playerid'])+',["playlistid","speed","position","totaltime",'\
                    '"time","percentage","shuffled","repeat","canrepeat","canshuffle",'\
