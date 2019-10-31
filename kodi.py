@@ -377,12 +377,14 @@ def leiser():
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
     vol = int(float(vol)*100)
-    print(vol)
+    #print(vol)
     json_data = get_active_player()
+    print(json_data)
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":'+vol+'}'
         data = data_method + data_prop
+        print(vol)
         send(data,1,'','volume')
     return
 def mute():
