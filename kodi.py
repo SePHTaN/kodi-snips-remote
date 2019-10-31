@@ -165,7 +165,7 @@ def find_title_id(titlename,searchkey,id_slot_name,json_data):
         if item[searchkey].lower()==titlename.lower():
             titleid = item[id_slot_name]
             break
-    ausgabe('"title-id:"+titleid',1)
+    ausgabe(titleid,1,'','title-id: ')
     return(titleid)
 def find_title(titlename,json_data):
     ausgabe('find_title',1)
@@ -173,7 +173,7 @@ def find_title(titlename,json_data):
     for item in json_data:
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
-    ausgabe('"title-found: "'+title_found,1)
+    ausgabe(title_found,1,'','title-found: ')
     return(title_found)
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
@@ -239,7 +239,6 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
-    #ausgabe('active_json:'+active_json,1)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
@@ -286,7 +285,7 @@ def resume():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
-        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":true]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":true}'
         data = data_method + data_prop
         send(data,1,'','resume')
     return
