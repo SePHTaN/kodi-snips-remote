@@ -239,6 +239,7 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
+    print('Result:',active_json)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
@@ -285,7 +286,7 @@ def resume():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"play":true}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":true}'
         data = data_method + data_prop
         send(data,1,'','resume')
     return
@@ -294,7 +295,7 @@ def pause():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"play":false}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"play":false}'
         data = data_method + data_prop
         send(data,1,'','pause')
     return
@@ -303,7 +304,7 @@ def stop():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.Stop"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+'}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+'}'
         data = data_method + data_prop
         send(data,1,'','stop')
     return
@@ -313,7 +314,7 @@ def partymode():
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetPartymode"'
         #data_prop = ',"params":[0,true]'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"partymode":true}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
         data = data_method + data_prop
         send(data,1,'','partymode')
     return
@@ -334,7 +335,7 @@ def shuffle(state):
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetShuffle"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"shuffle":'+state+'}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"shuffle":'+state+'}'
         data = data_method + data_prop
         send(data,1,'','shuffle')
     return
@@ -343,7 +344,7 @@ def next_media():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"to":"next"}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"to":"next"}'
         data = data_method + data_prop
         send(data,1,'','next_media')
     return
@@ -352,7 +353,7 @@ def previous_media():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
-        data_prop = ',"params":[{"playerid":'+str(json_data['playerid'])+',"to":"previous"}]'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"to":"previous"}'
         data = data_method + data_prop
         send(data,1,'','previous_media')
     return
@@ -361,7 +362,7 @@ def lauter():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":[{"volume":"increment"}]'
+        data_prop = ',"params":{"volume":"increment"}'
         data = data_method + data_prop
         send(data,1,'','lauter')
     return
@@ -370,7 +371,7 @@ def leiser():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":[{"volume":"decrement"}]'
+        data_prop = ',"params":{"volume":"decrement"}'
         data = data_method + data_prop
         send(data,1,'','leiser')
     return
@@ -381,7 +382,7 @@ def volume(vol):
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
-        data_prop = ',"params":[{"volume":'+vol+'}]'
+        data_prop = ',"params":{"volume":'+vol+'}'
         data = data_method + data_prop
         send(data,1,'','volume')
     return
@@ -390,7 +391,7 @@ def mute():
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetMute"'
-        data_prop = ',"params":[{"mute":"toggle"}]'
+        data_prop = ',"params":{"mute":"toggle"}'
         data = data_method + data_prop
         send(data,1,'','mute')
     return
