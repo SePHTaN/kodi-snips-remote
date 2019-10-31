@@ -247,7 +247,7 @@ def get_properties():
     ausgabe('get_properties',1)
     player_id = get_active_player()
     if player_id:
-        ausgabe('player_id:'+player_id,1)
+        ausgabe('player_id:"{0}"'.format(player_id),1)
         data_method= '"method":"Player.GetProperties"'
         data_prop = ',"params":['+str(player_id['playerid'])+',["playlistid","speed","position","totaltime",'\
                    '"time","percentage","shuffled","repeat","canrepeat","canshuffle",'\
