@@ -309,10 +309,9 @@ def stop():
     return
 def partymode():
     ausgabe('partymode',1)
-    json_data = get_active_player()
-    if json_data != [] and json_data:
+    #json_data = get_active_player()
+    #if json_data != [] and json_data:
         data_method= '"method":"Player.SetPartymode"'
-        #data_prop = ',"params":[0,true]'
         data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
         data = data_method + data_prop
         send(data,1,'','partymode')
@@ -368,6 +367,7 @@ def lauter():
 def leiser():
     ausgabe('lautstärke_runter',1)
     json_data = get_active_player()
+    print(json_data)
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"decrement"}'
@@ -377,7 +377,6 @@ def leiser():
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
     vol = int(float(vol)*100)
-    #print(vol)
     json_data = get_active_player()
     print(json_data)
     if json_data != [] and json_data:
