@@ -13,7 +13,7 @@ is_injecting=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
-debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
+debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
@@ -313,7 +313,7 @@ def on_message(client, userdata, msg):
         ausgabe(''+msg.topic,0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        site_id= payload['siteId']
+        #site_id= payload['siteId']
         ausgabe('silent_mediaplay',1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
@@ -324,7 +324,7 @@ def on_message(client, userdata, msg):
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
         check for is_in_session to end kodi navigator when asked or start a new session for navigator session loop
         '''
-        site_id=payload['siteId']
+        #site_id=payload['siteId']
         if kodi.check_connectivity() and not is_in_session:
             ausgabe('reset_mediaplay',1)
             playing_state_current = kodi.get_running_state()
@@ -352,7 +352,7 @@ def on_message(client, userdata, msg):
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
         #get siteId to determin from which satellite (future feature)
-        site_id= payload['siteId']
+        #site_id= payload['siteId']
         if payload['text'] == '':
             end_session(session_id,text="")
 
@@ -376,13 +376,13 @@ def on_message(client, userdata, msg):
             slotname = payload["slots"][0]["slotName"]
         name = payload["intent"]["intentName"]
         session_id= payload['sessionId']
-        site_id= payload['siteId']
+        #site_id= payload['siteId']
         custom_data = payload['customData']
 #        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}\n   -- "{4}" wiedergabe \n   -- "sessionId: {5} '\
 #            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
         #added siteId to invest who was the sending satellite
         ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
-                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),1) # 0-->1
+                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
