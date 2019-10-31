@@ -313,7 +313,7 @@ def partymode():
     #if json_data != [] and json_data:
     data_method= '"method":"Player.SetPartymode"'
     #data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"partymode":true}'
-    data_prop = ',"params":{"playerid":"1","partymode":true}'
+    data_prop = ',"params":{"playerid":1,"partymode":true}'
     data = data_method + data_prop
     send(data,1,'','partymode')
     return
