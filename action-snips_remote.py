@@ -133,6 +133,7 @@ def kodi_navigation_gui(slotvalue,session_id):
         filtervalue="addons://user/"
     else:
         window = slotvalue
+        print("window=",slotvalue)
     kodi.open_gui(window=window,filtervalue=filtervalue)
     if session_id != "":
         end_session(session_id)
@@ -223,7 +224,7 @@ def start_playlist(playlist, playlistid):
     return
 def start_partymode():
     kodi.stop()
-    kodi_navigation_gui("musicplaylist")
+    #kodi_navigation_gui("musicplaylist")
     kodi.partymode()
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
