@@ -325,7 +325,7 @@ def subtitles(state):
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetSubtitle"'
-        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"subtitle":'+setstate+'}'
+        data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"subtitle":"'+setstate+'"}'
         data = data_method + data_prop
         send(data,1,'','subtitles')
     return
