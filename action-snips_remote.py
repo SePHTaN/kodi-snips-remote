@@ -73,29 +73,29 @@ def inject():
     send['operations'][0][1]['albums'] = send['operations'][0][1]['albums']+tupel
     client.publish("hermes/injection/perform",json.dumps(send))
     return
-#def start_navigator(session_id):
-def start_navigator(session_id,site_id="default"):
+def start_navigator(session_id):
+#def start_navigator(session_id,site_id="default"):
     #start a snips session loop so that the hotword is not necessary. this is for controll the kodi menue.
     ausgabe('start_navigator',1)
     global is_in_session
     is_in_session = 1
-    #client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
-    client.publish("hermes/feedback/sound/toggleOff",'{"siteId":site_id}')
+    client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
+    #client.publish("hermes/feedback/sound/toggleOff",'{"siteId":site_id}')
     end_session(session_id,text="Navigator gestartet")
     return
-#def end_navigator(session_id=""):
-def end_navigator(session_id="",site_id="default"):
+def end_navigator(session_id=""):
+#def end_navigator(session_id="",site_id="default"):
     #ends the session loop
     ausgabe('end_navigator',1)
     global is_in_session
     is_in_session = 0
     if session_id == "":
-#        start_session(session_type="notification",text="Navigator gestoppt")
-        start_session(site_id,session_type="notification",text="Navigator gestoppt")
+        start_session(session_type="notification",text="Navigator gestoppt")
+        #start_session(site_id,session_type="notification",text="Navigator gestoppt")
     else:
         end_session(session_id,text="Navigator gestoppt")
-    #client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
-    client.publish("hermes/feedback/sound/toggleOn",'{"siteId":site_id}')
+    client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
+    #client.publish("hermes/feedback/sound/toggleOn",'{"siteId":site_id}')
     return
 def kodi_navigation_input(slotvalue,session_id):
     #for the kodi Input.ExecuteAction while in session loop.
@@ -138,10 +138,11 @@ def kodi_navigation_gui(slotvalue,session_id):
     if session_id != "":
         end_session(session_id)
     return
-#def start_session(session_type="action",text="",intent_filter="",customData=""):
-def start_session(site_id="default",session_type="action",text="",intent_filter="",customData=""):
+def start_session(session_type="action",text="",intent_filter="",customData=""):
+#def start_session(site_id="default",session_type="action",text="",intent_filter="",customData=""):
     #starts a snips session as notification or as action. also adds custom data to session
-    ausgabe("start_session an Site-ID:{site_id}",1)
+    #ausgabe("start_session an Site-ID:{site_id}",1)   hier ist was falsch
+    ausgabe("start_session",1)
     data = ""
     cdata =""
     data = data + ',"text":"'+text+'"'
@@ -151,10 +152,10 @@ def start_session(site_id="default",session_type="action",text="",intent_filter=
         data = data + ',"intentFilter":null'
     if customData!="":
         cdata = ',"customData":"'+customData+'"'
-#    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
-#                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
-    client.publish("hermes/dialogueManager/startSession",'{"siteId":"'+site_id+'","init":'\
+    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
                    '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
+#    client.publish("hermes/dialogueManager/startSession",'{"siteId":"'+site_id+'","init":'\
+#                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
     return
 def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     #keeps the snips session running with or without tts. also adds custom data to session
@@ -180,8 +181,8 @@ def search(slotvalue,slotname,json_d):
     ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
     if len(titles) ==0:
-#        start_session(session_type="notification", text="keine medien gefunden")
-        start_session(site_id,session_type="notification", text="keine medien gefunden")
+        start_session(session_type="notification", text="keine medien gefunden")
+        #start_session(site_id,session_type="notification", text="keine medien gefunden")
     elif len(titles) >=1:
         ausgabe('slotname: '+slotname,2)
         if slotname == 'shows':
@@ -256,8 +257,8 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
             if json_episodes['limits']['total'] != 0:
                 id_tupel = build_tupel(json_episodes['episodes'], id_slot_name)
             else:
-                #start_session(session_type="notification", text="keine episoden gefunden")
-                start_session(site_id,session_type="notification", text="keine episoden gefunden")
+                start_session(session_type="notification", text="keine episoden gefunden")
+                #start_session(site_id,session_type="notification", text="keine episoden gefunden")
         elif slotname=='movies':
             id_tupel = [media_id_of_title_found]
         elif slotname=='genre':
@@ -332,19 +333,19 @@ def on_message(client, userdata, msg):
             playing_state_old = 0
         elif kodi.check_connectivity() and is_in_session:
             if kodi.get_running_state():
-                #end_navigator()
-                end_navigator("",site_id)
+                end_navigator()
+                #end_navigator("",site_id)
             else:
-#                start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
-#                              '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
-#                              '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
-#                              '"'+snipsuser+'search_show"'\
-#                              ,customData="kodi_navigation")
-                start_session(site_id,intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
+                start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
                               '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
                               '"'+snipsuser+'search_show"'\
                               ,customData="kodi_navigation")
+#                start_session(site_id,intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
+#                              '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
+#                              '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
+#                              '"'+snipsuser+'search_show"'\
+#                              ,customData="kodi_navigation")
 
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
@@ -495,9 +496,11 @@ def on_message(client, userdata, msg):
                 slotvalue: start, stop +synonyms
                 '''
                 if slotvalue =='start':
-                    start_navigator(session_id,site_id)
+                    start_navigator(session_id)
+                    #start_navigator(session_id,site_id)
                 if slotvalue == 'stop':
-                    end_navigator(session_id,site_id)
+                    end_navigator(session_id)
+                    #end_navigator(session_id,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'kodiInputNavigation':
                 '''
                 up, left, okay, back, search for movies with marvels
