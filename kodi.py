@@ -367,13 +367,12 @@ def lauter():
     return
 def leiser():
     ausgabe('lautstärke_runter',1)
-    #json_data = get_active_player()
-    #print(json_data)
-    #if json_data != [] and json_data:
-    data_method= '"method":"Application.SetVolume"'
-    data_prop = ',"params":{"volume":"decrement"}'
-    data = data_method + data_prop
-    send(data,1,'','leiser')
+    json_data = get_active_player()
+    if json_data != [] and json_data:
+        data_method= '"method":"Application.SetVolume"'
+        data_prop = ',"params":{"volume":"decrement"}'
+        data = data_method + data_prop
+        send(data,1,'','leiser')
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
