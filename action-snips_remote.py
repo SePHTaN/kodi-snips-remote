@@ -314,6 +314,8 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
+#    global is_injecting
+#    global is_injected
 #    if kodi.check_connectivity() and not is_injecting and not is_injected:
 #        start_session(session_type="notification", intent_filter="",\
 #                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
