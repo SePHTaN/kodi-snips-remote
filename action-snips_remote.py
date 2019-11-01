@@ -311,22 +311,19 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
     kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
-    #client.publish('hermes/tts/say','{"siteId": "rpiz1.zuhause.xx","lang":"de_DE",'\
-    #time.sleep(20)
-    #client.publish()
 def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
-    if kodi.check_connectivity() and not is_injecting and not is_injected:
-        start_session(session_type="notification", intent_filter="",\
-                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
-                      customData="", site_id="rpiz1.zuhause.xx")
-        inject()
-    if msg.topic != 'hermes/injection/complete':
-        is_injected=1
-        start_session(session_type="notification", intent_filter="",\
-                      text="Snips Kodi Remote ist jetzt bereit.",\
-                      customData="", site_id="rpiz1.zuhause.xx")
+#    if kodi.check_connectivity() and not is_injecting and not is_injected:
+#        start_session(session_type="notification", intent_filter="",\
+#                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
+#                      customData="", site_id="rpiz1.zuhause.xx")
+#        inject()
+#    if msg.topic != 'hermes/injection/complete':
+#        is_injected=1
+#        start_session(session_type="notification", intent_filter="",\
+#                      text="Snips Kodi Remote ist jetzt bereit.",\
+#                      customData="", site_id="rpiz1.zuhause.xx")
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
         #session_id= payload['sessionId']
