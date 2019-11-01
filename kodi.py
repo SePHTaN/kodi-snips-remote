@@ -386,7 +386,7 @@ def leiser():
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
-    vol = float(vol)*100)
+    vol = float(vol)*100
     print(vol)
     vol= int(vol)
     print(vol)
