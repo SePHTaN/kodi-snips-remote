@@ -158,21 +158,21 @@ def get_albums():
 #    json_data=send(data)
 #    return(json_data['songs'])
 def find_title_id(titlename,searchkey,id_slot_name,json_data):
-    ausgabe('find_title_id',1)
+    #ausgabe('find_title_id',1)
     titleid=0
     for item in json_data:
         if item[searchkey].lower()==titlename.lower():
             titleid = item[id_slot_name]
             break
-    ausgabe(titleid,1)
+    ausgabe(' -- find_title_id: TitleId:"{0}"'.format(titleid),1,)
     return(titleid)
 def find_title(titlename,json_data):
-    ausgabe('find_title',1)
+    #ausgabe('find_title',1)
     title_found =[]
     for item in json_data:
         if titlename.lower() in item['label'].lower():
             title_found = title_found+ [item['label']]
-    ausgabe(title_found,1)
+    ausgabe(' -- find_title: "{0}"'.format(title_found),1)
     return(title_found)
 def get_episodes_unseen(id):
     ausgabe('get_episodes_unseen',1)
