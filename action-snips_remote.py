@@ -311,7 +311,11 @@ def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
     if msg.topic != 'hermes/audioServer/default/audioFrame':
+        payload = json.loads(msg.payload.decode())
+        session_id= payload['sessionId']
+        site_id= payload['siteId']
         ausgabe(''+msg.topic,0)
+        ausgabe('"{3}" siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id,msg.topic),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
         #site_id= payload['siteId']
@@ -319,14 +323,16 @@ def on_message(client, userdata, msg):
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
-    elif msg.topic == 'hermes/tts/sayFinished':
-        payload = json.loads(msg.payload.decode())
-        session_id= payload['sessionId']
-        ausgabe('sessionId:"{0}"'.format(session_id),0)
+#    elif msg.topic == 'hermes/tts/sayFinished':
+#        payload = json.loads(msg.payload.decode())
+#        session_id= payload['sessionId']
+#        site_id= payload['siteId']
+#        ausgabe('siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id),0)
     elif msg.topic == 'hermes/dialogueManager/sessionEnded':
-        payload = json.loads(msg.payload.decode())
-        session_id= payload['sessionId']
-        ausgabe('sessionId:"{0}"'.format(session_id),0)
+#        payload = json.loads(msg.payload.decode())
+#        session_id= payload['sessionId']
+#        site_id= payload['siteId']
+        ausgabe('siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
