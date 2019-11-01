@@ -319,6 +319,10 @@ def on_message(client, userdata, msg):
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
+    elif msg.topic == 'hermes/tts/sayFinished':
+        payload = json.loads(msg.payload.decode())
+        session_id= payload['sessionId']
+        ausgabe('sessionId:"{0}"'.format(session_id),0)
     elif msg.topic == 'hermes/dialogueManager/sessionEnded':
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
