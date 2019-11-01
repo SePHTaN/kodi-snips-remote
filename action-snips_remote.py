@@ -312,10 +312,11 @@ def on_message(client, userdata, msg):
     global is_in_session
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
-        session_id= payload['sessionId']
-        site_id= payload['siteId']
-        ausgabe(''+msg.topic,0)
-        ausgabe('"{3}" siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id,msg.topic),0)
+        #session_id= payload['sessionId']
+        #site_id= payload['siteId']
+        #ausgabe(''+msg.topic,0)
+        ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
+        #ausgabe('"{3}" siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id,msg.topic),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
         #site_id= payload['siteId']
