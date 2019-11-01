@@ -226,7 +226,8 @@ def start_playlist(playlist, playlistid):
 def start_partymode():
     kodi.stop()
     kodi_navigation_gui("musicplaylist")
-    kodi.partymode()
+    #kodi.partymode()
+    kodi.partymode_playlist()
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     '''
