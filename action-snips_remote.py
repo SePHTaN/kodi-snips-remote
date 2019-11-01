@@ -10,6 +10,7 @@ from random import shuffle
 playing_state_old = 0
 is_in_session=0
 is_injecting=0
+is_injected=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
@@ -138,7 +139,7 @@ def kodi_navigation_gui(slotvalue,session_id):
     if session_id != "":
         end_session(session_id)
     return
-def start_session(session_type="action",text="",intent_filter="",customData=""):
+def start_session(session_type="action",text="",intent_filter="",customData="",site_id="default"):
 #def start_session(site_id="default",session_type="action",text="",intent_filter="",customData=""):
     #starts a snips session as notification or as action. also adds custom data to session
     #ausgabe("start_session an Site-ID:{site_id}",1)   hier ist was falsch
@@ -152,7 +153,9 @@ def start_session(session_type="action",text="",intent_filter="",customData=""):
         data = data + ',"intentFilter":null'
     if customData!="":
         cdata = ',"customData":"'+customData+'"'
-    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
+#    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
+#                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
+    client.publish("hermes/dialogueManager/startSession",'{"siteId": "'+site_id+'","init":'\
                    '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
 #    client.publish("hermes/dialogueManager/startSession",'{"siteId":"'+site_id+'","init":'\
 #                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
@@ -307,9 +310,23 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
     kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
+    #client.publish('hermes/tts/say','{"siteId": "rpiz1.zuhause.xx","lang":"de_DE",'\
+                                    '"text":"Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden."}')
+    #time.sleep(20)
+    #client.publish()
 def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
+    if kodi.check_connectivity() and not is_injecting and not is_injected:
+        start_session(session_type="notification", intent_filter="",\
+                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
+                      customData="", site_id="rpiz1.zuhause.xx")
+        inject()
+    if msg.topic != 'hermes/injection/complete':
+        is_injected=1
+        start_session(session_type="notification", intent_filter="",\
+                      text="Snips Kodi Remote ist jetzt bereit.",\
+                      customData="", site_id="rpiz1.zuhause.xx")
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
         #session_id= payload['sessionId']
@@ -319,7 +336,8 @@ def on_message(client, userdata, msg):
         #ausgabe('"{3}" siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id,msg.topic),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        #site_id= payload['siteId']
+        #also get the siteId of the client which issued the hotword
+        site_id= payload['siteId']
         ausgabe('silent_mediaplay',1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
