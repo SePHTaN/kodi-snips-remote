@@ -54,7 +54,7 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
         return
     return
 def check_connectivity():
-    ausgabe('check_connectivity',1)
+    #ausgabe('check_connectivity',1)
     data_method= '"method":"JSONRPC.Ping"'
     data_prop = ',"params":{}'
     data = data_method + data_prop
@@ -233,12 +233,12 @@ def clear_playlist(playlistid):
     send(data,1)
     return
 def get_active_player():
-    ausgabe('get_active_player',1)
+    #ausgabe('get_active_player',1)
     data_method= '"method":"Player.GetActivePlayers"'
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
-    #print('Result:',active_json)
+    print('Result:',active_json)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
@@ -281,7 +281,7 @@ def start_play(playlistid):
 #        send(data,1)
 #    return
 def resume():
-    ausgabe('resume',1)
+    #ausgabe('resume',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
@@ -290,7 +290,7 @@ def resume():
         send(data,1,'','resume')
     return
 def pause():
-    ausgabe('pause',1)
+    #ausgabe('pause',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
@@ -299,13 +299,14 @@ def pause():
         send(data,1,'','pause')
     return
 def stop():
-    ausgabe('stop',1)
+    #ausgabe('stop',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.Stop"'
         data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+'}'
         data = data_method + data_prop
         send(data,1,'','stop')
+        print('Zurück von send')
     return
 def partymode():
     ausgabe('partymode',1)
@@ -385,14 +386,16 @@ def leiser():
     return
 def volume(vol):
     ausgabe('lautstärke_setzen',1)
-    vol = int(float(vol)*100)
+    vol = float(vol)*100)
+    print(vol)
+    vol= int(vol)
+    print(vol)
     #json_data = get_active_player()
     #print(json_data)
     #if json_data != [] and json_data:
     data_method= '"method":"Application.SetVolume"'
     data_prop = ',"params":{"volume":'+vol+'}'
     data = data_method + data_prop
-    print(vol)
     send(data,1,'','volume')
     return
 def mute():
