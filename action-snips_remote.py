@@ -312,7 +312,6 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/asr/textCaptured')
     kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
     #client.publish('hermes/tts/say','{"siteId": "rpiz1.zuhause.xx","lang":"de_DE",'\
-                                    '"text":"Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden."}')
     #time.sleep(20)
     #client.publish()
 def on_message(client, userdata, msg):
