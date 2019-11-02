@@ -206,8 +206,8 @@ def add_playlist(playlist,playlistid):
     send(data,1)
     return
 def insert_playlist(tupel,types,playlistid):
-    ausgabe('insert_playlist',1)
     clear_playlist(playlistid)
+    ausgabe('insert_playlist',1)
     num=0
     data = "["
     for item in tupel:
@@ -309,7 +309,7 @@ def stop():
         print('Zurück von send')
     return
 def partymode():
-    ausgabe('partymode',1)
+    #ausgabe('partymode',1)
     #json_data = get_active_player()
     #if json_data != [] and json_data:
     data_method= '"method":"Player.SetPartymode"'
@@ -319,7 +319,7 @@ def partymode():
     send(data,1,'','partymode')
     return
 def partymode_playlist():
-    ausgabe('partymode_playlist',1)
+    #ausgabe('partymode_playlist',1)
     #json_data = get_active_player()
     #if json_data != [] and json_data:
     data_method= '"method":"Player.Open"'
@@ -388,10 +388,7 @@ def volume(vol):
     ausgabe('lautstärke_setzen',1)
     vol = float(vol)*100
     vol= int(vol)
-    print(vol)
     json_data = get_active_player()
-    #print(json_data)
-    #if json_data != [] and json_data:
     data_method= '"method":"Application.SetVolume"'
     data_prop = ',"params":{"volume":'+str(vol)+'}'
     data = data_method + data_prop
