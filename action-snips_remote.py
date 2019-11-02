@@ -134,7 +134,7 @@ def kodi_navigation_gui(slotvalue,session_id):
         filtervalue="addons://user/"
     else:
         window = slotvalue
-        print("window=",slotvalue)
+        print("kodi_navigation_gui: window=",window)
     kodi.open_gui(window=window,filtervalue=filtervalue)
     if session_id != "":
         end_session(session_id)
@@ -201,7 +201,7 @@ def search(slotvalue,slotname,json_d):
 def start_tv():
     ausgabe("start_tv",1)
     kodi.stop()
-    kodi_navigation_gui("videoplaylist")
+    kodi_navigation_gui("videoplaylist",session_id)
     showsid_tupel= build_tupel(kodi.get_tv_shows("tv"),"tvshowid")
     ausgabe(len(showsid_tupel))
     #kodi.show_notification(len(showsid_tupel)+" Serien gefunden. Episoden werden gesucht")
@@ -231,7 +231,7 @@ def start_partymode():
     kodi.stop()
     print('wieder in start_partymode')
     #kodi_navigation_gui("musicplaylist")
-    kodi_navigation_gui("musicplaylist",session_id)
+    #kodi_navigation_gui("musicplaylist",session_id)
     #kodi.partymode()
     kodi.partymode_playlist()
     return
