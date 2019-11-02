@@ -232,8 +232,8 @@ def start_partymode():
     print('wieder in start_partymode')
     #kodi_navigation_gui("musicplaylist")
     #kodi_navigation_gui("musicplaylist",session_id)
-    #kodi.partymode()
-    kodi.partymode_playlist()
+    kodi.partymode()
+    #kodi.partymode_playlist()
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     '''
