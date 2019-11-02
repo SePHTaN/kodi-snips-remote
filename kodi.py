@@ -238,7 +238,7 @@ def get_active_player():
     data_prop = ',"params":{}'
     data = data_method + data_prop
     active_json = send(data,1,'','get_active_player')
-    print('Result:',active_json)
+    #print('Result:',active_json)
     if active_json != [] and active_json:
         return(active_json[0])
     else:
