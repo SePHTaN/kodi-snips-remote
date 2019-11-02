@@ -174,7 +174,7 @@ def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     return
 def end_session(session_id,text=""):
     #ends a snips session with or without tts
-    ausgabe('end_session',1)
+    ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
     if text!="":
         text = ',"text":"'+text+'"'
     client.publish("hermes/dialogueManager/endSession",'{"sessionId":"'+session_id+'"'+text+'}')
@@ -222,14 +222,16 @@ def start_tv():
 def start_playlist(playlist, playlistid):
     ausgabe("start_playlist",1)
     kodi.stop()
-    kodi_navigation_gui("videoplaylist")
+    #kodi_navigation_gui("videoplaylist")
+    kodi_navigation_gui("videoplaylist",session_id)
     kodi.add_playlist(playlist,playlistid)
     kodi.start_play(playlistid)
     return
 def start_partymode():
     kodi.stop()
     print('wieder in start_partymode')
-    kodi_navigation_gui("musicplaylist")
+    #kodi_navigation_gui("musicplaylist")
+    kodi_navigation_gui("musicplaylist",session_id)
     #kodi.partymode()
     kodi.partymode_playlist()
     return
@@ -287,9 +289,11 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
         end_session(session_id, text="")
         kodi.stop()
         if playlistid == 1:
-            kodi_navigation_gui("videoplaylist")
+            #kodi_navigation_gui("videoplaylist")
+            kodi_navigation_gui("videoplaylist",session_id)
         elif playlistid == 0:
-            kodi_navigation_gui("musicplaylist")
+            #kodi_navigation_gui("musicplaylist")
+            kodi_navigation_gui("musicplaylist",session_id)
         kodi.insert_playlist(id_tupel,id_slot_name, playlistid)
         kodi.start_play(playlistid)
     else:
