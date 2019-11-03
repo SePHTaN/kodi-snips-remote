@@ -92,7 +92,7 @@ def end_navigator(session_id="",site_id="default"):
     is_in_session = 0
     if session_id == "":
         #start_session(session_type="notification",text="Navigator gestoppt")
-        start_session(session_type="notification",text="Navigator gestoppt",site_id)
+        start_session(session_type="notification",text="Navigator gestoppt",site_id=site_id)
     else:
         end_session(session_id,text="Navigator gestoppt")
     #client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
