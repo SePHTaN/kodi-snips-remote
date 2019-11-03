@@ -73,7 +73,7 @@ def filter_dict(d):
             d[key]=re.sub('[^A-Za-z0-9 ]+', ' ', str(value))
     return d
 def get_movies():
-    ausgabe('get_movies',1)
+    #ausgabe('get_movies',1)
     data_method= '"method":"VideoLibrary.GetMovies"'
     data_prop = ',"params":{"properties":["title"],"sort":{"method":"none","order":"ascending"}}'
     data = data_method + data_prop
@@ -81,7 +81,7 @@ def get_movies():
     #ausgabe('get_movies - data= ' + data + 'jd-movies=' + json_data['movies'],1)
     return(json_data['movies'])
 def get_shows():
-    ausgabe('get_shows',1)
+    #ausgabe('get_shows',1)
     data_method= '"method":"VideoLibrary.GetTVShows"'
     data_prop = ',"params":{"properties":["title"],"sort":{"method":"none","order":"ascending"}}'
     data = data_method + data_prop
@@ -89,7 +89,7 @@ def get_shows():
     #ausgabe('get_shows - data= ' + data + 'jd-tvshows=' + json_data['tvshows'],1)
     return(json_data['tvshows'])
 def get_tv_shows(tag):
-    ausgabe('get_tv_shows',1)
+    #ausgabe('get_tv_shows',1)
     data_method= '"method":"VideoLibrary.GetTVShows"'
     data_prop = ',"params":{"properties":["tag"],"sort":{"method":"none","order":"ascending"},'\
                 '"filter":{"tag":"'+tag+'"}}'
@@ -97,7 +97,7 @@ def get_tv_shows(tag):
     json_data=send(data,1,'','get_tv_shows')
     return(json_data['tvshows'])
 def get_tv_shows_episodeids(tupel):
-    ausgabe('get_tv_shows_id',1)
+    #ausgabe('get_tv_shows_id',1)
     num=0
     data = "["
     for item in tupel:
@@ -118,7 +118,7 @@ def get_tv_shows_episodeids(tupel):
 #test = [2, 9, 15, 19, 22, 39, 48, 52, 53, 65, 66, 68, 69, 70, 71, 72]
 #get_tv_shows_episodeids(test)
 def get_genre():
-    ausgabe('get_genre',1)
+    #ausgabe('get_genre',1)
     data_method= '"method":"AudioLibrary.GetGenres"'
     data_prop = ',"params":{"properties":["title"],"sort":{"method":"none","order":"ascending"}}'
     data = data_method + data_prop
@@ -126,7 +126,7 @@ def get_genre():
     #ausgabe('get_genre - data= ' + data + 'jd-genres=' + json_data['genres'],1)
     return(json_data['genres'])
 def get_artists():
-    ausgabe('get_artists',1)
+    #ausgabe('get_artists',1)
     data_method= '"method":"AudioLibrary.GetArtists"'
     data_prop = ',"params":{"albumartistsonly":false,"properties":[],"limits":{"start":0},"sort":{"method":"label","order":"ascending","ignorearticle":true}}'
     data = data_method + data_prop
@@ -141,7 +141,7 @@ def get_artists():
 #    json_data=send(data)
 #    return(json_data['songs'])
 def get_albums():
-    ausgabe('get_albums',1)
+    #ausgabe('get_albums',1)
     data_method= '"method":"AudioLibrary.GetAlbums"'
     data_prop = ',"params":{"properties":["title"],"limits":{"start":0},"sort":{"method":"title","order":"ascending","ignorearticle":true}}'
     data = data_method + data_prop
@@ -175,7 +175,7 @@ def find_title(titlename,json_data):
     ausgabe(' find_title: "{0}"'.format(title_found),1)
     return(title_found)
 def get_episodes_unseen(id):
-    ausgabe('get_episodes_unseen',1)
+    #ausgabe('get_episodes_unseen',1)
     data_method= '"method":"VideoLibrary.GetEpisodes"'
     data_prop = ',"params":{"tvshowid":'+str(id)+',' \
                 '"filter": {"field": "playcount", "operator": "lessthan", "value": "1"},' \
@@ -187,7 +187,7 @@ def get_episodes_unseen(id):
     #ausgabe('get_episodes_unseen - data= ' + data + 'jd-epi-uns=' + json_data,1)
     return(json_data)
 def get_episodes_all(id):
-    ausgabe('add_episodes_all',1)
+    #ausgabe('add_episodes_all',1)
     data_method= '"method":"VideoLibrary.GetEpisodes"'
     data_prop = ',"params":{"tvshowid":'+str(id)+','\
                 '"properties":["title"],'\
@@ -244,7 +244,7 @@ def get_active_player():
     else:
         return(active_json)
 def get_properties():
-    ausgabe('get_properties',1)
+    #ausgabe('get_properties',1)
     player_id = get_active_player()
     if player_id:
         #ausgabe('player_id:"{0}"'.format(player_id),1)
@@ -306,7 +306,6 @@ def stop():
         data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+'}'
         data = data_method + data_prop
         send(data,1,'','stop')
-        print('Zurück von send')
     return
 def partymode():
     #ausgabe('partymode',1)
@@ -328,7 +327,7 @@ def partymode_playlist():
     send(data,1,'','partymode_playlist')
     return
 def subtitles(state):
-    ausgabe('subtitles',1)
+    #ausgabe('subtitles',1)
     setstate = "off"
     if state == "true":
         setstate = "on"
@@ -340,7 +339,7 @@ def subtitles(state):
         send(data,1,'','subtitles')
     return
 def shuffle(state):
-    ausgabe("shuffle",1)
+    #ausgabe("shuffle",1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.SetShuffle"'
@@ -349,7 +348,7 @@ def shuffle(state):
         send(data,1,'','shuffle')
     return
 def next_media():
-    ausgabe('next_media',1)
+    #ausgabe('next_media',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
@@ -358,7 +357,7 @@ def next_media():
         send(data,1,'','next_media')
     return
 def previous_media():
-    ausgabe('previous_media',1)
+    #ausgabe('previous_media',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.GoTo"'
@@ -367,7 +366,7 @@ def previous_media():
         send(data,1,'','previous_media')
     return
 def lauter():
-    ausgabe('lautstärke_hoch',1)
+    #ausgabe('lautstärke_hoch',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
@@ -376,7 +375,7 @@ def lauter():
         send(data,1,'','lauter')
     return
 def leiser():
-    ausgabe('lautstärke_runter',1)
+    #ausgabe('lautstärke_runter',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
@@ -385,7 +384,7 @@ def leiser():
         send(data,1,'','leiser')
     return
 def volume(vol):
-    ausgabe('lautstärke_setzen',1)
+    #ausgabe('lautstärke_setzen',1)
     vol = float(vol)*100
     vol= int(vol)
     json_data = get_active_player()
@@ -395,7 +394,7 @@ def volume(vol):
     send(data,1,'','volume')
     return
 def mute():
-    ausgabe('lautstärke_an-aus',1)
+    #ausgabe('lautstärke_an-aus',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetMute"'
@@ -422,7 +421,7 @@ def show_notification(text):
     send(data,1,'','show_notification')
     return
 def open_gui(window="",mediatype="", filtervalue="",isfilter=0):
-    ausgabe('open_gui',1)
+    #ausgabe('open_gui',1)
     parameter=""
     if isfilter:
         if mediatype == 'movies' or mediatype == 'tvshows':
