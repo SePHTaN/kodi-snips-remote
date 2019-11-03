@@ -81,7 +81,7 @@ def start_navigator(session_id,site_id="default"):
     global is_in_session
     is_in_session = 1
     #client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
-    client.publish("hermes/feedback/sound/toggleOff",'{"siteId":site_id}')
+    client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"'+site_id+'"}')
     end_session(session_id,text="Navigator gestartet")
     return
 #def end_navigator(session_id=""):
@@ -96,7 +96,7 @@ def end_navigator(session_id="",site_id="default"):
     else:
         end_session(session_id,text="Navigator gestoppt")
     #client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
-    client.publish("hermes/feedback/sound/toggleOn",'{"siteId":site_id}')
+    client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"'+site_id+'"}')
     return
 def kodi_navigation_input(slotvalue,session_id):
     #for the kodi Input.ExecuteAction while in session loop.
@@ -185,7 +185,7 @@ def search(slotvalue,slotname,json_d,site_id):
     ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
     if len(titles) ==0:
-        start_session(session_type="notification", text="keine medien gefunden",site_id)
+        start_session(session_type="notification", text="keine medien gefunden",site_id=site_id)
         #start_session(site_id,session_type="notification", text="keine medien gefunden")
     elif len(titles) >=1:
         ausgabe('slotname: '+slotname,2)
@@ -264,7 +264,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
                 id_tupel = build_tupel(json_episodes['episodes'], id_slot_name)
             else:
                 #start_session(session_type="notification", text="keine episoden gefunden")
-                start_session(session_type="notification", text="keine episoden gefunden",site_id) #site_id='str(site_id)'
+                start_session(session_type="notification", text="keine episoden gefunden",site_id=site_id) #site_id='str(site_id)'
         elif slotname=='movies':
             id_tupel = [media_id_of_title_found]
         elif slotname=='genre':
@@ -360,7 +360,6 @@ def on_message(client, userdata, msg):
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
         check for is_in_session to end kodi navigator when asked or start a new session for navigator session loop
         '''
-        #site_id=payload['siteId']
         if kodi.check_connectivity() and not is_in_session:
             ausgabe('reset_mediaplay',1)
             playing_state_current = kodi.get_running_state()
@@ -381,7 +380,7 @@ def on_message(client, userdata, msg):
                               '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
                               '"'+snipsuser+'search_show"'\
-                              ,customData="kodi_navigation",site_id)
+                              ,customData="kodi_navigation",site_id=site_id)
 
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
@@ -414,11 +413,11 @@ def on_message(client, userdata, msg):
         session_id= payload['sessionId']
         site_id= payload['siteId']
         custom_data = payload['customData']
-        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId": "{5}" '\
-            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
+#        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId": "{5}" '\
+#            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
         #added siteId to invest who was the sending satellite
-#        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
-#                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
+        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
+                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
