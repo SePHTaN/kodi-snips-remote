@@ -232,8 +232,8 @@ def start_partymode():
     print('wieder in start_partymode')
     #kodi_navigation_gui("musicplaylist")
     #kodi_navigation_gui("musicplaylist",session_id)
-    kodi.partymode()
-    #kodi.partymode_playlist()
+    #kodi.partymode()
+    kodi.partymode_playlist()
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
     '''
@@ -355,7 +355,7 @@ def on_message(client, userdata, msg):
 #        session_id= payload['sessionId']
 #        site_id= payload['siteId']
         #ausgabe('"siteId":"{0}" "sessionId":"{1}"'.format(site_id,session_id),0)
-        ausgabe('siteId:'+site_id+' sessionId:'+session_id,0)
+        ausgabe('siteId:'+str(site_id)+' sessionId:'+str(session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
