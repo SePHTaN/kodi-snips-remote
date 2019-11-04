@@ -365,16 +365,18 @@ def previous_media():
         data = data_method + data_prop
         send(data,1,'','previous_media')
     return
-def lauter():
+def lauter(schritte):
     #ausgabe('lautstärke_hoch',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"increment"}'
         data = data_method + data_prop
-        send(data,1,'','lauter')
+        while schritte > 0:
+            schritte = schritte -1
+            send(data,1,'','lauter')
     return
-def leiser():
+def leiser(schritte):
     #ausgabe('lautstärke_runter',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
