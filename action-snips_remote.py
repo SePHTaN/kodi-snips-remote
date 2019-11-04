@@ -313,7 +313,10 @@ def on_connect(client, userdata, flags, rc):
     #client.subscribe('hermes/asr/textCaptured')
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
-    kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
+    connected=kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
+    print(Connected)
+        
+
 def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
@@ -620,11 +623,11 @@ def on_message(client, userdata, msg):
                     ausgabe('previous_media',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLauter':
                     #hey snips lauter, kodi lauter, lautstärke hoch
-                    kodi.lauter()
+                    kodi.lauter(slotvalue)
                     ausgabe('lautstärke_hoch',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLeiser':
                     #hey snips leiser, nicht so laut, lautstärke runter
-                    kodi.leiser()
+                    kodi.leiser(slotvalue)
                     ausgabe('lautstärke_runter',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiSetVolume':
                     #hey snips leiser, nicht so laut, lautstärke runter
