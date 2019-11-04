@@ -314,8 +314,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
     connected=kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
-    print(Connected)
-        
+    print(connected)        
 
 def on_message(client, userdata, msg):
     global playing_state_old
