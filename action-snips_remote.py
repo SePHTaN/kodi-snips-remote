@@ -665,28 +665,28 @@ def on_message(client, userdata, msg):
                     slotname: shows
                     slotvalue:  -filled from injection
                     '''
-                    search(slotvalue,slotname,kodi.get_shows())
+                    search(slotvalue,slotname,kodi.get_shows(),site_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'search_movie':
                     '''
                     hey snips search movie spider
                     slotname: movies
                     slotvalue:  -filled from injection
                     '''
-                    search(slotvalue,slotname,kodi.get_movies())
+                    search(slotvalue,slotname,kodi.get_movies(),site_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'search_artist':
                     '''
                     hey snips search artist eminem
                     slotname: artist
                     slotvalue:  -filled from injection
                     '''
-                    search(slotvalue,slotname,kodi.get_artists())
+                    search(slotvalue,slotname,kodi.get_artists(),site_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'search_album':
                     '''
                     hey snips search album relapse
                     slotname: albums
                     slotvalue:  -filled from injection
                     '''
-                    search(slotvalue,slotname,kodi.get_albums())
+                    search(slotvalue,slotname,kodi.get_albums(),site_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'play_music':
                     '''
                     hey snips starte partymode, partymode an
