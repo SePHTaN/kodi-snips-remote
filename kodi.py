@@ -475,9 +475,11 @@ def init(kodi_user,kodi_pw,kodi_ip,kodi_port,_debuglevel):
     global debuglevel
     kodi_url = 'http://'+kodi_user+':'+kodi_pw+'@'+kodi_ip+':'+kodi_port+'/jsonrpc'
     debuglevel = _debuglevel
+    connected = 0
     if check_connectivity():
         print(("Kodi connected at {0}:{1}".format(kodi_ip, kodi_port)))
-        return(true)
+        connected = 1
+        return connected
     else:
         print(("Kodi not found at {0}:{1}".format(kodi_ip, kodi_port)))
-        return(false)
+        return connected
