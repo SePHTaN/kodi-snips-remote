@@ -367,6 +367,7 @@ def previous_media():
     return
 def lauter(schritte):
     #ausgabe('lautstärke_hoch',1)
+    schritte = int(schritte)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
@@ -378,12 +379,15 @@ def lauter(schritte):
     return
 def leiser(schritte):
     #ausgabe('lautstärke_runter',1)
+    schritte = int(schritte)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Application.SetVolume"'
         data_prop = ',"params":{"volume":"decrement"}'
         data = data_method + data_prop
-        send(data,1,'','leiser')
+        while schritte > 0:
+            schritte = schritte -1
+            send(data,1,'','leiser')
     return
 def volume(vol):
     #ausgabe('lautstärke_setzen',1)
@@ -473,5 +477,7 @@ def init(kodi_user,kodi_pw,kodi_ip,kodi_port,_debuglevel):
     debuglevel = _debuglevel
     if check_connectivity():
         print(("Kodi connected at {0}:{1}".format(kodi_ip, kodi_port)))
+        return(true)
     else:
         print(("Kodi not found at {0}:{1}".format(kodi_ip, kodi_port)))
+        return(false)
