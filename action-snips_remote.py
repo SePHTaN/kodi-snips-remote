@@ -624,14 +624,14 @@ def on_message(client, userdata, msg):
                     #hey snips lauter, kodi lauter, lautstärke hoch
                     if slotname==schritte:
                         kodi.lauter(slotvalue)
-                    else
+                    else:
                         kodi.lauter(1)
                     ausgabe('lautstärke_hoch',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLeiser':
                     #hey snips leiser, nicht so laut, lautstärke runter
                     if slotname==schritte:
                         kodi.leiser(slotvalue)
-                    else
+                    else:
                         kodi.leiser(1)
                     ausgabe('lautstärke_runter',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiSetVolume':
