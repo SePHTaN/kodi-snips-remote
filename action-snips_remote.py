@@ -308,6 +308,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
 def on_connect(client, userdata, flags, rc):
     global is_injected
     print(("Connected to {0} with result code {1}".format(MQTT_HOST, rc)))
+    client.subscribe("hermes/injection/complete")
     client.subscribe("hermes/hotword/default/detected")
     client.subscribe('hermes/intent/#')
     client.subscribe('hermes/tts/sayFinished')
@@ -334,9 +335,11 @@ def on_message(client, userdata, msg):
 #        inject()
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
+        ausgabe('injection erfolgreich',0)
         start_session(session_type="notification", intent_filter="",\
-                      text="Snips Kodi Remote ist jetzt bereit.",\
+                      text="Kodi Remote für Snips ist jetzt bereit.",\
                       customData="", site_id="rpiz1.zuhause.xx")
+        ausgabe('injection complete ende',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
         #session_id= payload['sessionId']
