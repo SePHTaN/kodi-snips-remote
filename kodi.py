@@ -3,6 +3,7 @@
 import json
 import requests
 import re
+import time
 kodi_url = ''
 debuglevel = 1 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 playlist_size =20
@@ -376,7 +377,7 @@ def lauter(schritte):
         while schritte > 0:
             schritte = schritte -1
             send(data,1,'','lauter')
-            time.sleep(0.1)
+            time.sleep(.100)
     return
 def leiser(schritte):
     ausgabe('lautstärke_runter',1)
@@ -389,7 +390,7 @@ def leiser(schritte):
     while schritte > 0:
         schritte = schritte -1
         send(data,1,'','leiser')
-        time.sleep(0.1)
+        time.sleep(.100)
     return
 def volume(vol):
     #ausgabe('lautstärke_setzen',1)
