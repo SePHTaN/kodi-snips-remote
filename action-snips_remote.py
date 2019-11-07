@@ -197,6 +197,8 @@ def search(slotvalue,slotname,json_d,site_id):
             mediatype = 'artists'
         elif slotname == 'albums':
             mediatype ='albums'
+        elif slotname == 'genre':
+            mediatype ='genres'
         kodi.open_gui("", mediatype, slotvalue,isfilter=1)
     return(titles)
 def start_tv():
