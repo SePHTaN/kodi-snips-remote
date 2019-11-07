@@ -369,8 +369,8 @@ def previous_media():
 def lauter(schritte):
     ausgabe('lautstärke_hoch',1)
     schritte = int(schritte)
-    #json_data = get_active_player()
-    #if json_data != [] and json_data:
+    if schritte > 10:
+        schritte = 10
     data_method= '"method":"Application.SetVolume"'
     data_prop = ',"params":{"volume":"increment"}'
     data = data_method + data_prop
@@ -382,8 +382,8 @@ def lauter(schritte):
 def leiser(schritte):
     ausgabe('lautstärke_runter',1)
     schritte = int(schritte)
-    #json_data = get_active_player()
-    #if json_data != [] and json_data:
+    if schritte > 10:
+        schritte = 10
     data_method= '"method":"Application.SetVolume"'
     data_prop = ',"params":{"volume":"decrement"}'
     data = data_method + data_prop
