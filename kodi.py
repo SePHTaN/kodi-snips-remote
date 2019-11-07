@@ -417,12 +417,12 @@ def get_gui():
     data = data_method + data_prop
     window = send(data,1)
     return(window['currentwindow'])
-#def introspect():
-#    data_method= '"method":"JSONRPC.Introspect"'
-#    data_prop = ''
-#    data = data_method + data_prop
-#    ausgabe(send(data,1),3)
-#    return
+def introspect():
+    data_method= '"method":"JSONRPC.Introspect"'
+    data_prop = ', "params": { "filter": { "id": "GUI.ActivateWindow", "type": "method" } }'
+    data = data_method + data_prop
+    ausgabe(send(data,1),3)
+    return
 def show_notification(text):
     data_method= '"method":"GUI.ShowNotification"'
     data_prop = ',"params":{"title":"Notification","message": "'+text+'"}'
