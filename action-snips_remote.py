@@ -290,11 +290,10 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
         end_session(session_id, text="")
         kodi.stop()
         if playlistid == 1:
-            #kodi_navigation_gui("videoplaylist")
             kodi_navigation_gui("videoplaylist",session_id)
         elif playlistid == 0:
-            #kodi_navigation_gui("musicplaylist")
-            kodi_navigation_gui("musicplaylist",session_id)
+            #kodi_navigation_gui("musicplaylist",session_id)
+            kodi_navigation_gui("visualisation",session_id)
         kodi.insert_playlist(id_tupel,id_slot_name, playlistid)
         kodi.start_play(playlistid)
     else:
