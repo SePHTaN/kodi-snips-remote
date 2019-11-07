@@ -445,6 +445,9 @@ def open_gui(window="",mediatype="", filtervalue="",isfilter=0):
             if mediatype == 'artists':
                 destination = "musicdb://artists/"
                 filterkey = "artist"
+            elif mediatype == 'genres':
+                destination = "musicdb://genres/"
+                filterkey = "genre"
             else:
                 destination = "musicdb://albums/"
                 filterkey = "album"
