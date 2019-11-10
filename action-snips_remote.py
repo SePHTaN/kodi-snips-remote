@@ -58,7 +58,7 @@ def ausgabe(text,mode=3):
     return
 def build_tupel(json, filtervalue):
     #Build tupels and lists of json
-    ausgabe('build_tupel',1)
+    #ausgabe('build_tupel',1)
     json_data = json
     tupel = []
     for item in json_data:
@@ -66,11 +66,11 @@ def build_tupel(json, filtervalue):
             tupel = tupel + [item[filtervalue]]
     return tupel
 def inject():
-    #makes an injection for snpips from the kodi library. Entities Injection musst be installed
+    #makes an injection for snips from the kodi library. Entities Injection musst be installed
     #replaces all special chars with ' ' bevor inject.
     global is_injecting
     is_injecting = 1
-    ausgabe('inject',1)
+    #ausgabe('inject',1)
     send={"operations": [["addFromVanilla",{"shows":[],"movies":[],"genre":[],"artist":[],"albums":[]}]]} #"shows":[],"movies":[],... are entitie names from snips
     tupel = build_tupel(kodi.get_movies(),'title')
     send['operations'][0][1]['movies'] = send['operations'][0][1]['movies']+tupel
@@ -87,36 +87,32 @@ def inject():
 #def start_navigator(session_id):
 def start_navigator(session_id,site_id="default"):
     #start a snips session loop so that the hotword is not necessary. this is for controll the kodi menue.
-    ausgabe('start_navigator',1)
+    #ausgabe('start_navigator',1)
     global is_in_session
     is_in_session = 1
-    #client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"default"}')
     client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"'+site_id+'"}')
     end_session(session_id,text="Navigator gestartet")
     return
-#def end_navigator(session_id=""):
 def end_navigator(session_id="",site_id="default"):
     #ends the session loop
-    ausgabe('end_navigator',1)
+    #ausgabe('end_navigator',1)
     global is_in_session
     is_in_session = 0
     if session_id == "":
-        #start_session(session_type="notification",text="Navigator gestoppt")
         start_session(session_type="notification",text="Navigator gestoppt",site_id=site_id)
     else:
         end_session(session_id,text="Navigator gestoppt")
-    #client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"default"}')
     client.publish("hermes/feedback/sound/toggleOn",'{"siteId":"'+site_id+'"}')
     return
 def kodi_navigation_input(slotvalue,session_id):
     #for the kodi Input.ExecuteAction while in session loop.
-    ausgabe('kodi_navigation_input',1)
+    #ausgabe('kodi_navigation_input',1)
     kodi.send_input(slotvalue)
     end_session(session_id)
     return
 def kodi_navigation_gui(slotvalue,session_id):
     #for the kodi GUI.ActivateWindow. prepares values before send
-    ausgabe('kodi_navigation_gui',1)
+    #ausgabe('kodi_navigation_gui',1)
     window=""
     filtervalue=""
     if slotvalue == 'home':
@@ -150,10 +146,8 @@ def kodi_navigation_gui(slotvalue,session_id):
         end_session(session_id)
     return
 def start_session(session_type="action",text="",intent_filter="",customData="",site_id="default"):
-#def start_session(site_id="default",session_type="action",text="",intent_filter="",customData=""):
     #starts a snips session as notification or as action. also adds custom data to session
-    #ausgabe("start_session an Site-ID:{site_id}",1)   hier ist was falsch
-    ausgabe("start_session",1)
+    #ausgabe("start_session",1)
     data = ""
     cdata =""
     data = data + ',"text":"'+text+'"'
@@ -163,16 +157,12 @@ def start_session(session_type="action",text="",intent_filter="",customData="",s
         data = data + ',"intentFilter":null'
     if customData!="":
         cdata = ',"customData":"'+customData+'"'
-#    client.publish("hermes/dialogueManager/startSession",'{"siteId": "default","init":'\
-#                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
     client.publish("hermes/dialogueManager/startSession",'{"siteId": "'+site_id+'","init":'\
                    '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
-#    client.publish("hermes/dialogueManager/startSession",'{"siteId":"'+site_id+'","init":'\
-#                   '{"type":"'+session_type+'","canBeEnqueued":true'+data+'}'+cdata+'}')
     return
 def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     #keeps the snips session running with or without tts. also adds custom data to session
-    ausgabe('keep_session_alive; '+session_id,1)
+    #ausgabe('keep_session_alive; '+session_id,1)
     data = ""
     data = data + ',"text":"'+text+'"'
     if intent_filter!="":
@@ -184,21 +174,19 @@ def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     return
 def end_session(session_id,text=""):
     #ends a snips session with or without tts
-    ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
+    #ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
     if text!="":
         text = ',"text":"'+text+'"'
     client.publish("hermes/dialogueManager/endSession",'{"sessionId":"'+session_id+'"'+text+'}')
     return
-#def search(slotvalue,slotname,json_d):
 def search(slotvalue,slotname,json_d,site_id):
     #check if word is in titles of the kodi library. e.g. marvel will be in more than 1 title. if found it will display it in kodi
-    ausgabe("search",1)
+    #ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
     if len(titles) ==0:
         start_session(session_type="notification", text="keine medien gefunden",site_id=site_id)
-        #start_session(site_id,session_type="notification", text="keine medien gefunden")
     elif len(titles) >=1:
-        ausgabe('slotname: '+slotname,2)
+        #ausgabe('slotname: '+slotname,2)
         if slotname == 'shows':
             mediatype = 'tvshows'
         elif slotname =='movies':
@@ -212,11 +200,11 @@ def search(slotvalue,slotname,json_d,site_id):
         kodi.open_gui("", mediatype, slotvalue,isfilter=1)
     return(titles)
 def start_tv():
-    ausgabe("start_tv",1)
+    #ausgabe("start_tv",1)
     kodi.stop()
     kodi_navigation_gui("videoplaylist",session_id)
     showsid_tupel= build_tupel(kodi.get_tv_shows("tv"),"tvshowid")
-    ausgabe(len(showsid_tupel))
+    #ausgabe(len(showsid_tupel))
     #kodi.show_notification(len(showsid_tupel)+" Serien gefunden. Episoden werden gesucht")
     id_tupel =[]
     kodi.show_notification("Programm wird geladen")
@@ -227,13 +215,13 @@ def start_tv():
             id_tupel_temp = build_tupel(item['result']['episodes'], "episodeid")
             shuffle(id_tupel_temp)
             id_tupel = id_tupel + [id_tupel_temp[0]]+ [id_tupel_temp[1]]+ [id_tupel_temp[2]]+ [id_tupel_temp[3]]
-    ausgabe(len(id_tupel))
+    #ausgabe(len(id_tupel))
     shuffle(id_tupel)
     kodi.insert_playlist(id_tupel,'episodeid', '1')
     kodi.start_play('1')
     return
 def start_playlist(playlist, playlistid):
-    ausgabe("start_playlist",1)
+    #ausgabe("start_playlist",1)
     kodi.stop()
     kodi_navigation_gui("videoplaylist",session_id)
     kodi.add_playlist(playlist,playlistid)
@@ -241,11 +229,9 @@ def start_playlist(playlist, playlistid):
     return
 def start_partymode():
     kodi.stop()
-    #kodi.partymode()
     kodi_navigation_gui("visualisation",session_id)
     kodi.partymode_playlist()
     return
-#def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid):
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid,site_id):
     '''
     search id of title in json from kodi library. if id is found get episodes/songs ids, stop kodi, insert playlist, (shuffle playlist), play.
@@ -262,7 +248,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
     playlistid: the playlist id for kodi. 0=Music; 1=Movies; 2=Pictures
     '''
     global playing_state_old
-    ausgabe('main_controller',1)
+    #ausgabe('main_controller',1)
     media_id_of_title_found = kodi.find_title_id(slotvalue,'label',id_slot_name,json_d)
     if media_id_of_title_found != 0:
         intent_filter=""
@@ -275,8 +261,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
             if json_episodes['limits']['total'] != 0:
                 id_tupel = build_tupel(json_episodes['episodes'], id_slot_name)
             else:
-                #start_session(session_type="notification", text="keine episoden gefunden")
-                start_session(session_type="notification", text="keine episoden gefunden",site_id=site_id) #site_id='str(site_id)'
+                start_session(session_type="notification", text="keine episoden gefunden",site_id=site_id)
         elif slotname=='movies':
             id_tupel = [media_id_of_title_found]
         elif slotname=='genre':
@@ -308,7 +293,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
         kodi.start_play(playlistid)
     else:
         titles = search(slotvalue,slotname,json_d,site_id)
-        ausgabe(titles)
+        #ausgabe(titles)
         if len(titles) == 1:
             end_session(session_id, text="")
             main_controller(titles[0],slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid,site_id)
@@ -343,17 +328,17 @@ def on_message(client, userdata, msg):
     global is_injected
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
-        ausgabe('injection erfolgreich',0)
+        #ausgabe('injection erfolgreich',0)
         start_session(session_type="notification", intent_filter="",\
                       text="Kodi Remote für Snips ist jetzt bereit.",\
                       customData="", site_id="rpiz1.zuhause.xx")
         ausgabe('injection complete ende',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
-        ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
+        #ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        ausgabe('silent_mediaplay',1)
+        #ausgabe('silent_mediaplay',1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
@@ -361,14 +346,14 @@ def on_message(client, userdata, msg):
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
         site_id= payload['siteId']
-        ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
+        #ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
         check for is_in_session to end kodi navigator when asked or start a new session for navigator session loop
         '''
         if kodi.check_connectivity() and not is_in_session:
-            ausgabe('reset_mediaplay',1)
+            #ausgabe('reset_mediaplay',1)
             playing_state_current = kodi.get_running_state()
             if playing_state_old == 1 and playing_state_current == 0:
                 kodi.resume()
@@ -383,16 +368,14 @@ def on_message(client, userdata, msg):
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
                               '"'+snipsuser+'search_show"'\
                               ,customData="kodi_navigation",site_id=site_id)
-
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
         if payload['text'] == '':
             end_session(session_id,text="")
-
     elif 'intent' in msg.topic:
-        ausgabe("Intent detected!",1)
+        #ausgabe("Intent detected!",1)
         payload = json.loads(msg.payload.decode())
         slotvalue = ""
         slotname = ""
@@ -413,11 +396,9 @@ def on_message(client, userdata, msg):
         session_id= payload['sessionId']
         site_id= payload['siteId']
         custom_data = payload['customData']
-#        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId": "{5}" '\
-#            .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id),0)
         #added siteId to invest who was the sending satellite
-        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
-                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
+        #ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
+        #        .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
@@ -432,7 +413,6 @@ def on_message(client, userdata, msg):
                 slotvalue:  -filled from injection
                 '''
                 intent_filter = '"'+snipsuser+'select_movie","'+snipsuser+'play_movie"'
-                #main_controller(slotvalue,slotname,'movieid',kodi.get_movies(),session_id,intent_filter,slotisrandom, playlistid)
                 main_controller(slotvalue,slotname,'movieid',kodi.get_movies(),session_id,intent_filter,slotisrandom, playlistid,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'select_movie':
                 '''
@@ -443,7 +423,6 @@ def on_message(client, userdata, msg):
                 '''
                 if payload['customData']=="media_selected":
                     intent_filter = '"'+snipsuser+'select_movie","'+snipsuser+'play_movie"'
-                    #main_controller(slotvalue,slotname,'movieid',kodi.get_movies(),session_id,intent_filter,slotisrandom,playlistid)
                     main_controller(slotvalue,slotname,'movieid',kodi.get_movies(),session_id,intent_filter,slotisrandom,playlistid,site_id)
                 else:
                     end_session(session_id,text="")
@@ -456,7 +435,6 @@ def on_message(client, userdata, msg):
                 slotvalue: random +synonyms
                 '''
                 intent_filter = '"'+snipsuser+'play_show","'+snipsuser+'select_show"'
-                #main_controller(slotvalue,slotname,'tvshowid',kodi.get_shows(),session_id,intent_filter,slotisrandom,playlistid)
                 main_controller(slotvalue,slotname,'tvshowid',kodi.get_shows(),session_id,intent_filter,slotisrandom,playlistid,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'select_show':
                 '''
@@ -466,7 +444,6 @@ def on_message(client, userdata, msg):
                 '''
                 if payload['customData']=="media_selected":
                     intent_filter = '"'+snipsuser+'play_show","'+snipsuser+'select_show"'
-                    #main_controller(slotvalue,slotname,'tvshowid',kodi.get_shows(),session_id,intent_filter,slotisrandom,playlistid)
                     main_controller(slotvalue,slotname,'tvshowid',kodi.get_shows(),session_id,intent_filter,slotisrandom,playlistid,site_id)
                 else:
                     end_session(session_id,text="")
@@ -477,7 +454,6 @@ def on_message(client, userdata, msg):
                 slotvalue:  -filled from injection
                 '''
                 intent_filter = '"'+snipsuser+'play_genre",'+'"'+snipsuser+'select_genre"'
-                #main_controller(slotvalue,slotname,'genreid',kodi.get_genre(),session_id,intent_filter,slotisrandom,0)
                 main_controller(slotvalue,slotname,'genreid',kodi.get_genre(),session_id,intent_filter,slotisrandom,0,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'select_genre':
                 #maybe slotname is wrong has to be investigated : look at play show/select_show
@@ -488,7 +464,6 @@ def on_message(client, userdata, msg):
                 '''
                 if payload['customData']=="media_selected":
                     intent_filter = '"'+snipsuser+'play_genre",'+'"'+snipsuser+'select_genre"'
-                    #main_controller(slotvalue,slotname,'genreid',kodi.get_genre(),session_id,intent_filter,slotisrandom,0)
                     main_controller(slotvalue,slotname,'genreid',kodi.get_genre(),session_id,intent_filter,slotisrandom,0,site_id)
                 else:
                     end_session(session_id,text="")
@@ -499,7 +474,6 @@ def on_message(client, userdata, msg):
                 slotvalue:  -filled from injection
                 '''
                 intent_filter = '"'+snipsuser+'play_artist",'+'"'+snipsuser+'select_artist"'
-                #main_controller(slotvalue,slotname,'artistid',kodi.get_artists(),session_id,intent_filter,slotisrandom,0)
                 main_controller(slotvalue,slotname,'artistid',kodi.get_artists(),session_id,intent_filter,slotisrandom,0,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'select_artist':
                 '''
@@ -509,7 +483,6 @@ def on_message(client, userdata, msg):
                 '''
                 if payload['customData']=="media_selected":
                     intent_filter = '"'+snipsuser+'play_artist",'+'"'+snipsuser+'select_artist"'
-                    #main_controller(slotvalue,slotname,'artistid',kodi.get_artists(),session_id,intent_filter,slotisrandom,0)
                     main_controller(slotvalue,slotname,'artistid',kodi.get_artists(),session_id,intent_filter,slotisrandom,0,site_id)
                 else:
                     end_session(session_id,text="")
@@ -520,7 +493,6 @@ def on_message(client, userdata, msg):
                 slotvalue:  -filled from injection
                 '''
                 intent_filter = '"'+snipsuser+'play_album",'+'"'+snipsuser+'select_album"'
-                #main_controller(slotvalue,slotname,'albumid',kodi.get_albums(),session_id,intent_filter,slotisrandom,0)
                 main_controller(slotvalue,slotname,'albumid',kodi.get_albums(),session_id,intent_filter,slotisrandom,0,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'select_album':
                 '''
@@ -530,7 +502,6 @@ def on_message(client, userdata, msg):
                 '''
                 if payload['customData']=="media_selected":
                     intent_filter = '"'+snipsuser+'play_album",'+'"'+snipsuser+'select_album"'
-                    #main_controller(slotvalue,slotname,'albumid',kodi.get_albums(),session_id,intent_filter,slotisrandom,0)
                     main_controller(slotvalue,slotname,'albumid',kodi.get_albums(),session_id,intent_filter,slotisrandom,0,site_id)
                 else:
                     end_session(session_id,text="")
@@ -541,10 +512,8 @@ def on_message(client, userdata, msg):
                 slotvalue: start, stop +synonyms
                 '''
                 if slotvalue =='start':
-                    #start_navigator(session_id)
                     start_navigator(session_id,site_id)
                 if slotvalue == 'stop':
-                    #end_navigator(session_id)
                     end_navigator(session_id,site_id)
             elif msg.topic == 'hermes/intent/'+snipsuser+'kodiInputNavigation':
                 '''
@@ -599,56 +568,47 @@ def on_message(client, userdata, msg):
                     #hey snips pause
                     playing_state_old = 0
                     kodi.pause()
-                    ausgabe('pause',1)
+                    #ausgabe('pause',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiResume':
                     #hey snips resume
                     playing_state_old = 0
                     kodi.resume()
-                    ausgabe('resume',1)
+                    #ausgabe('resume',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiStop':
                     #hey snips stop player
                     playing_state_old = 0
                     kodi.stop()
-                    ausgabe('stop',1)
+                    #ausgabe('stop',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiNext':
                     #hey snips play next song/episode
                     kodi.next_media()
-                    ausgabe('next_media',1)
+                    #ausgabe('next_media',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiPrevious':
                     #hey snips play previous
                     kodi.previous_media()
-                    ausgabe('previous_media',1)
+                    #ausgabe('previous_media',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLauter':
                     #hey snips lauter, kodi lauter, lautstärke hoch
                     if slotname == "schritte":
                         kodi.lauter(slotvalue)
                     else:
                         kodi.lauter(1)
-                    ausgabe('lautstärke_hoch',1)
+                    #ausgabe('lautstärke_hoch',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiLeiser':
                     #hey snips leiser, nicht so laut, lautstärke runter
                     if slotname == 'schritte':
                         kodi.leiser(slotvalue)
                     else:
                         kodi.leiser(1)
-                    ausgabe('lautstärke_runter',1)
+                    #ausgabe('lautstärke_runter',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiSetVolume':
                     #hey snips leiser, nicht so laut, lautstärke runter
                     kodi.volume(slotvalue)
-                    ausgabe('lautstärke_setzen',1)
+                    #ausgabe('lautstärke_setzen',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiMute':
                     #hey snips leiser, nicht so laut, lautstärke runter
                     kodi.mute()
-                    ausgabe('lautstärke_an-aus',1)
-# Old Shuffle Functioncalls
-#                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiShuffleON':
-#                    #hey snips set suffle on
-#                    kodi.shuffle_on(playlistid)
-#                    ausgabe('shuffle_on',1)
-#                elif msg.topic == 'hermes/intent/'+snipsuser+'KodiShuffleOFF':
-#                    #hey snips set suffle off
-#                    kodi.shuffle_off(playlistid)
-#                    ausgabe('shuffle_off',1)
+                    #ausgabe('lautstärke_an-aus',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'KodiShuffle':
                     '''
                     hey snips set shuffle an,off,an,aus
@@ -656,7 +616,7 @@ def on_message(client, userdata, msg):
                     slotvalue: on, off +synonyms
                     '''
                     kodi.shuffle(slotvalue)
-                    ausgabe('shuffle',1)
+                    #ausgabe('shuffle',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'kodiSubtitles':
                     '''
                     hey snips set subtitles off
@@ -664,7 +624,7 @@ def on_message(client, userdata, msg):
                     slotvalue: on, off +synonyms
                     '''
                     kodi.subtitles(slotvalue)
-                    ausgabe('set_subtitles',1)
+                    #ausgabe('set_subtitles',1)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'search_show':
                     '''
                     hey snips search show marvel
