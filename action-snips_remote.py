@@ -322,7 +322,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("hermes/injection/complete")
     client.subscribe("hermes/hotword/default/detected")
     #client.subscribe('hermes/intent/#')
-    for item in myintents
+    for item in myintents:
         client.subscribe('hermes/intent/'+snipsuser+str(item)+)
     client.subscribe('hermes/tts/sayFinished')
     client.subscribe('hermes/dialogueManager/#')
