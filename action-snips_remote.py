@@ -23,6 +23,7 @@ myintents = "datenbank",\
             "KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiShuffle",\
             "KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","kodiSubtitles",\
             "play_music","play_tv"
+print(myintents)
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
@@ -323,7 +324,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("hermes/hotword/default/detected")
     #client.subscribe('hermes/intent/#')
     for item in myintents:
-        client.subscribe('hermes/intent/'+snipsuser+str(item)+)
+        client.subscribe('hermes/intent/'+snipsuser+str(item))
     client.subscribe('hermes/tts/sayFinished')
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
