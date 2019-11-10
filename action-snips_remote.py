@@ -15,7 +15,14 @@ is_injected=0
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
 # all intents used by kodi remote
-myintents = "datenbank","play_movie","select_movie","play_show","select_show","play_genre","select_genre","play_artist","select_artist","play_album","select_album","kodiNavigator","kodiInputNavigation","kodiWindowNavigation","KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","KodiShuffle","kodiSubtitles","search_show","search_movie","search_artist","search_album","play_music","play_tv","kodi_wakeup"
+myintents = "datenbank",\
+            "play_movie","select_movie","play_show","select_show","play_genre","select_genre",\
+            "play_artist","select_artist","play_album","select_album",\
+            "search_show","search_movie","search_artist","search_album",\
+            "kodiNavigator","kodiInputNavigation","kodiWindowNavigation","kodi_wakeup",\
+            "KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiShuffle",\
+            "KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","kodiSubtitles",\
+            "play_music","play_tv"
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
@@ -310,10 +317,13 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
     return
 def on_connect(client, userdata, flags, rc):
     global is_injected
+    global myintents
     print(("Connected to {0} with result code {1}".format(MQTT_HOST, rc)))
     client.subscribe("hermes/injection/complete")
     client.subscribe("hermes/hotword/default/detected")
-    client.subscribe('hermes/intent/#')
+    #client.subscribe('hermes/intent/#')
+    for item in myintents
+        client.subscribe('hermes/intent/'+snipsuser+str(item)+)
     client.subscribe('hermes/tts/sayFinished')
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
@@ -339,22 +349,13 @@ def on_message(client, userdata, msg):
         ausgabe('injection complete ende',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
-        #session_id= payload['sessionId']
-        #ausgabe(''+msg.topic,0)
         ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
-        #ausgabe('"{3}" siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id,msg.topic),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        #also get the siteId of the client which issued the hotword
         ausgabe('silent_mediaplay',1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
-#    elif msg.topic == 'hermes/tts/sayFinished':
-#        payload = json.loads(msg.payload.decode())
-#        session_id= payload['sessionId']
-#        site_id= payload['siteId']
-#        ausgabe('siteId:"{0}" sessionId:"{1}"'.format(site_id,session_id),0)
     elif msg.topic == 'hermes/dialogueManager/sessionEnded':
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
@@ -390,7 +391,6 @@ def on_message(client, userdata, msg):
             end_session(session_id,text="")
 
     elif 'intent' in msg.topic:
-        #checks if 'intent' is for kodi_remote
         ausgabe("Intent detected!",1)
         payload = json.loads(msg.payload.decode())
         slotvalue = ""
