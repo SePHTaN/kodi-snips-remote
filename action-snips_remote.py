@@ -14,6 +14,8 @@ is_injected=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
+# all intents used by kodi remote
+myintents = "datenbank","play_movie","select_movie","play_show","select_show","play_genre","select_genre","play_artist","select_artist","play_album","select_album","kodiNavigator","kodiInputNavigation","kodiWindowNavigation","KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","KodiShuffle","kodiSubtitles","search_show","search_movie","search_artist","search_album","play_music","play_tv","kodi_wakeup"
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
@@ -328,11 +330,6 @@ def on_message(client, userdata, msg):
     global is_in_session
     global is_injecting
     global is_injected
-#    if kodi.check_connectivity() and not is_injecting and not is_injected:
-#        start_session(session_type="notification", intent_filter="",\
-#                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
-#                      customData="", site_id="rpiz1.zuhause.xx")
-#        inject()
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
         ausgabe('injection erfolgreich',0)
@@ -389,12 +386,11 @@ def on_message(client, userdata, msg):
         #checks for captured text to end session immediately if it is empty
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
-        #get siteId to determin from which satellite (future feature)
-        #site_id= payload['siteId']
         if payload['text'] == '':
             end_session(session_id,text="")
 
     elif 'intent' in msg.topic:
+        #checks if 'intent' is for kodi_remote
         ausgabe("Intent detected!",1)
         payload = json.loads(msg.payload.decode())
         slotvalue = ""
