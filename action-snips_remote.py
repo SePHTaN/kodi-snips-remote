@@ -69,7 +69,7 @@ def inject():
     #replaces all special chars with ' ' bevor inject.
     global is_injecting
     is_injecting = 1
-    #ausgabe('inject',1)
+    ausgabe('inject',1)
     send={"operations": [["addFromVanilla",{"shows":[],"movies":[],"genre":[],"artist":[],"albums":[]}]]} #"shows":[],"movies":[],... are entitie names from snips
     tupel = build_tupel(kodi.get_movies(),'title')
     send['operations'][0][1]['movies'] = send['operations'][0][1]['movies']+tupel
@@ -83,7 +83,6 @@ def inject():
     send['operations'][0][1]['albums'] = send['operations'][0][1]['albums']+tupel
     client.publish("hermes/injection/perform",json.dumps(send))
     return
-#def start_navigator(session_id):
 def start_navigator(session_id,site_id="default"):
     #start a snips session loop so that the hotword is not necessary. this is for controll the kodi menue.
     #ausgabe('start_navigator',1)
@@ -313,7 +312,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
     connected=kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
-    print(connected)
+    #print(connected)
     if connected:
         start_session(session_type="notification", intent_filter="",\
                       text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
