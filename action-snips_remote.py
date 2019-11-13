@@ -341,8 +341,9 @@ def on_message(client, userdata, msg):
             playing_state_old = 1
     elif msg.topic == 'hermes/dialogueManager/sessionEnded':
         payload = json.loads(msg.payload.decode())
+        session_id= payload['sessionId']
         site_id= payload['siteId']
-        #ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
+        ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
