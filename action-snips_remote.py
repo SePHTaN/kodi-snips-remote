@@ -357,10 +357,12 @@ def on_message(client, userdata, msg):
                 kodi.resume()
             playing_state_old = 0
         elif kodi.check_connectivity() and is_in_session:
-            status=0
-            status=kodi.get_running_state()
-            if status:
-                ausgabe('Kodi-Status:'+status,2)
+            #status=0
+            #status=kodi.get_running_state()
+            #if status:
+            if kodi.get_running_state():
+                #ausgabe('Kodi-Status:'+status,2)
+                ausgabe('Kodi-Status : ',2)
                 end_navigator("",site_id)
             else:
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
