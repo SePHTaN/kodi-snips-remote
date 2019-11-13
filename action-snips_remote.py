@@ -332,7 +332,7 @@ def on_message(client, userdata, msg):
         ausgabe('injection erfolgreich beendet',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
-        #ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
+        ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
         #ausgabe('silent_mediaplay',1)
