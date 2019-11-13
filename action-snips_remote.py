@@ -23,7 +23,6 @@ myintents = "datenbank",\
             "KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiShuffle",\
             "KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","kodiSubtitles",\
             "play_music","play_tv"
-print(myintents)
 debuglevel = 0 # 0= snips subscriptions; 1= function call; 2= debugs; 3=higher debug
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
@@ -328,11 +327,10 @@ def on_message(client, userdata, msg):
     global is_injected
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
-        #ausgabe('injection erfolgreich',0)
         start_session(session_type="notification", intent_filter="",\
                       text="Kodi Remote für Snips ist jetzt bereit.",\
                       customData="", site_id="rpiz1.zuhause.xx")
-        ausgabe('injection complete ende',0)
+        ausgabe('injection erfolgreich beendet',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
         #ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
@@ -344,7 +342,6 @@ def on_message(client, userdata, msg):
             playing_state_old = 1
     elif msg.topic == 'hermes/dialogueManager/sessionEnded':
         payload = json.loads(msg.payload.decode())
-        session_id= payload['sessionId']
         site_id= payload['siteId']
         #ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
         '''
@@ -359,8 +356,9 @@ def on_message(client, userdata, msg):
                 kodi.resume()
             playing_state_old = 0
         elif kodi.check_connectivity() and is_in_session:
-            if kodi.get_running_state():
-                #end_navigator()
+            status=kodi.get_running_state()
+            if status:
+                ausgabe('Kodi-Status:'+status,2)
                 end_navigator("",site_id)
             else:
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
