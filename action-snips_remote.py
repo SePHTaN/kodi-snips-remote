@@ -161,7 +161,7 @@ def start_session(session_type="action",text="",intent_filter="",customData="",s
     return
 def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     #keeps the snips session running with or without tts. also adds custom data to session
-    ausgabe('keep_session_alive; '+session_id,1)
+    ausgabe('keep_session_alive: '+session_id,1)
     data = ""
     data = data + ',"text":"'+text+'"'
     if intent_filter!="":
@@ -657,8 +657,8 @@ def on_message(client, userdata, msg):
                     search(slotvalue,slotname,kodi.get_albums(),site_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'search_genre':
                     '''
-                    hey snips search album relapse
-                    slotname: albums
+                    hey snips search genre pop
+                    slotname: genre
                     slotvalue:  -filled from injection
                     '''
                     search(slotvalue,slotname,kodi.get_genre(),site_id)
