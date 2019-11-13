@@ -85,7 +85,7 @@ def inject():
     return
 def start_navigator(session_id,site_id="default"):
     #start a snips session loop so that the hotword is not necessary. this is for controll the kodi menue.
-    #ausgabe('start_navigator',1)
+    ausgabe('start_navigator',1)
     global is_in_session
     is_in_session = 1
     client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"'+site_id+'"}')
@@ -93,7 +93,7 @@ def start_navigator(session_id,site_id="default"):
     return
 def end_navigator(session_id="",site_id="default"):
     #ends the session loop
-    #ausgabe('end_navigator',1)
+    ausgabe('end_navigator',1)
     global is_in_session
     is_in_session = 0
     if session_id == "":
@@ -145,7 +145,7 @@ def kodi_navigation_gui(slotvalue,session_id):
     return
 def start_session(session_type="action",text="",intent_filter="",customData="",site_id="default"):
     #starts a snips session as notification or as action. also adds custom data to session
-    #ausgabe("start_session",1)
+    ausgabe("start_session",1)
     data = ""
     cdata =""
     data = data + ',"text":"'+text+'"'
@@ -172,7 +172,7 @@ def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     return
 def end_session(session_id,text=""):
     #ends a snips session with or without tts
-    #ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
+    ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
     if text!="":
         text = ',"text":"'+text+'"'
     client.publish("hermes/dialogueManager/endSession",'{"sessionId":"'+session_id+'"'+text+'}')
@@ -355,6 +355,7 @@ def on_message(client, userdata, msg):
                 kodi.resume()
             playing_state_old = 0
         elif kodi.check_connectivity() and is_in_session:
+            status=0
             status=kodi.get_running_state()
             if status:
                 ausgabe('Kodi-Status:'+status,2)
@@ -394,8 +395,8 @@ def on_message(client, userdata, msg):
         site_id= payload['siteId']
         custom_data = payload['customData']
         #added siteId to invest who was the sending satellite
-        #ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
-        #        .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
+        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
+                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
