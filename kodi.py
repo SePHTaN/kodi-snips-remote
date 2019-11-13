@@ -248,7 +248,7 @@ def get_properties():
         return(json)
     return
 def get_running_state():
-    #ausgabe('get_running_state',1)
+    ausgabe('get_running_state',1)
     state = 0
     json_state = get_properties()
     ausgabe('Player-Properties:'+json_state,2)
