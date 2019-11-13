@@ -251,7 +251,7 @@ def get_running_state():
     ausgabe('get_running_state',1)
     state = 0
     json_state = get_properties()
-    ausgabe('Player-Properties:'+json_state,2)
+    ausgabe('Player-Properties : ' + json_state,2)
     if json_state:
         if json_state['speed'] == 1:
             state=1
@@ -372,7 +372,7 @@ def leiser(schritte):
     while schritte > 0:
         schritte = schritte -1
         send(data,1,'','leiser')
-        time.sleep(.110)
+        time.sleep(.120)
     return
 def volume(vol):
     #ausgabe('lautstärke_setzen',1)
