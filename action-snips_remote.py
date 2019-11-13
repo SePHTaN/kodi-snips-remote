@@ -11,6 +11,7 @@ playing_state_old = 0
 is_in_session=0
 is_injecting=0
 is_injected=0
+status=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
