@@ -356,6 +356,7 @@ def lauter(schritte):
     data_method= '"method":"Application.SetVolume"'
     data_prop = ',"params":{"volume":"increment"}'
     data = data_method + data_prop
+    #while 0 < schritte < 10:
     while schritte > 0:
         schritte = schritte -1
         send(data,1,'','lauter')
