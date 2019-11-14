@@ -180,8 +180,9 @@ def end_session(session_id,text=""):
     return
 def search(slotvalue,slotname,json_d,site_id):
     #check if word is in titles of the kodi library. e.g. marvel will be in more than 1 title. if found it will display it in kodi
-    #ausgabe("search",1)
+    ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
+    ausgabe('Titel/Genres gefunden : '+titles,2)
     if len(titles) ==0:
         start_session(session_type="notification", text="keine medien gefunden",site_id=site_id)
     elif len(titles) >=1:
