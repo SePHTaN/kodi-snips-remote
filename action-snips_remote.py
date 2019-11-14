@@ -352,7 +352,7 @@ def on_message(client, userdata, msg):
         check for is_in_session to end kodi navigator when asked or start a new session for navigator session loop
         '''
         if kodi.check_connectivity() and not is_in_session:
-            #ausgabe('reset_mediaplay',1)
+            ausgabe('reset_mediaplay',1)
             playing_state_current = kodi.get_running_state()
             if playing_state_old == 1 and playing_state_current == 0:
                 kodi.resume()
@@ -364,14 +364,14 @@ def on_message(client, userdata, msg):
             if kodi.get_running_state():
                 #ausgabe('Kodi-Status:'+status,2)
                 ausgabe('Kodi-Status : ',2)
-                end_navigator("",site_id)
+                end_navigator(session_id="",site_id=side_id)
             else:
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
                               '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
                               '"'+snipsuser+'search_show"'+snipsuser+'search_genre",'\
                               ,customData="kodi_navigation",site_id=site_id)
-                ausgabe(Navigator)
+                #ausgabe(Navigator)
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
         payload = json.loads(msg.payload.decode())
@@ -411,9 +411,7 @@ def on_message(client, userdata, msg):
                 if not is_injecting and not is_injected:
                     inject()
                 else:
-                    start_session(session_type="notification", intent_filter="",\
-                                  text="Kodi Datenbank wurde bereits injiziert.",\
-                                  customData="", site_id="rpiz1.zuhause.xx")
+                    end_session(session_id,text="Kodi Datenbank wurde bereits injiziert.")
             elif msg.topic == 'hermes/intent/'+snipsuser+'play_movie':
                 '''
                 hey snips start the movie iron man
