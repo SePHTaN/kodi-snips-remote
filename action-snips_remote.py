@@ -306,9 +306,9 @@ def on_connect(client, userdata, flags, rc):
     print(("Connected to {0} with result code {1}".format(MQTT_HOST, rc)))
     client.subscribe("hermes/injection/complete")
     client.subscribe("hermes/hotword/default/detected")
-    #client.subscribe('hermes/intent/#')
-    for item in myintents:
-        client.subscribe('hermes/intent/'+snipsuser+str(item))
+    client.subscribe('hermes/intent/#')
+    #for item in myintents:
+    #    client.subscribe('hermes/intent/'+snipsuser+str(item))
     client.subscribe('hermes/tts/sayFinished')
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
