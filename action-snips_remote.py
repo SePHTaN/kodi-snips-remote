@@ -323,7 +323,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     global playing_state_old
     global is_in_session
-    global is_injecting
+    #global is_injecting
     global is_injected
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
@@ -336,7 +336,7 @@ def on_message(client, userdata, msg):
         ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        #ausgabe('silent_mediaplay',1)
+        ausgabe('silent_mediaplay - is_in_session = '+is_in_session,1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
@@ -370,6 +370,7 @@ def on_message(client, userdata, msg):
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
                               '"'+snipsuser+'search_show"'+snipsuser+'search_genre",'\
                               ,customData="kodi_navigation",site_id=site_id)
+                ausgabe(Navigator)
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
         payload = json.loads(msg.payload.decode())
@@ -404,9 +405,14 @@ def on_message(client, userdata, msg):
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
-            if msg.topic == 'hermes/intent/'+snipsuser+'datenbank' and not is_injecting and not is_injected:
+            if msg.topic == 'hermes/intent/'+snipsuser+'datenbank':
                 #hey snips synchronise library
-                inject()
+                if not is_injecting and not is_injected:
+                    inject()
+                else:
+                    start_session(session_type="notification", intent_filter="",\
+                                  text="Kodi Datenbank wurde bereits injiziert.",\
+                                  customData="", site_id="rpiz1.zuhause.xx")
             elif msg.topic == 'hermes/intent/'+snipsuser+'play_movie':
                 '''
                 hey snips start the movie iron man
