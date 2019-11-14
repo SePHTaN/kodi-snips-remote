@@ -19,7 +19,7 @@ snipsuser = "Sysiphus:"
 myintents = "datenbank",\
             "play_movie","select_movie","play_show","select_show","play_genre","select_genre",\
             "play_artist","select_artist","play_album","select_album",\
-            "search_show","search_movie","search_artist","search_album",\
+            "search_show","search_movie","search_artist","search_album","search_genre",\
             "kodiNavigator","kodiInputNavigation","kodiWindowNavigation","kodi_wakeup",\
             "KodiPause","KodiResume","KodiStop","KodiNext","KodiPrevious","KodiShuffle",\
             "KodiLauter","KodiLeiser","KodiSetVolume","KodiMute","kodiSubtitles",\
