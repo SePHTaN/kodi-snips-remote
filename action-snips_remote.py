@@ -368,7 +368,7 @@ def on_message(client, userdata, msg):
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
                               '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
-                              '"'+snipsuser+'search_show"'\
+                              '"'+snipsuser+'search_show"'+snipsuser+'search_genre",'\
                               ,customData="kodi_navigation",site_id=site_id)
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
