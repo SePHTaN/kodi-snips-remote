@@ -273,7 +273,7 @@ def resume():
         send(data,1,'','resume')
     return
 def pause():
-    #ausgabe('pause',1)
+    ausgabe('pause',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
@@ -282,7 +282,7 @@ def pause():
         send(data,1,'','pause')
     return
 def stop():
-    #ausgabe('stop',1)
+    ausgabe('stop',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.Stop"'
