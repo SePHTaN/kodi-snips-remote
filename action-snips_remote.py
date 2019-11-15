@@ -11,7 +11,7 @@ playing_state_old = 0
 is_in_session=0
 is_injecting=0
 is_injected=0
-#status=0
+status=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
@@ -142,6 +142,7 @@ def kodi_navigation_gui(slotvalue,session_id):
         print("kodi_navigation_gui: window=",window)
     kodi.open_gui(window=window,filtervalue=filtervalue)
     if session_id != "":
+        ausgabe('Navigation_gui - end sessionId = {0}'.format(session_id),2)
         end_session(session_id)
     return
 def start_session(session_type="action",text="",intent_filter="",customData="",site_id="default"):
@@ -231,6 +232,8 @@ def start_partymode(session_id):
     kodi.stop()
     #ausgabe('wieder in start_partymode',2)
     kodi.partymode_playlist()
+    ausgabe('Partymode - sessionId = {0}'.format(session_id),2)
+    #time.sleep(1) erst time importieren? in kodi.py dann auch ?
     kodi_navigation_gui("visualisation",session_id)
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid,site_id):
@@ -303,7 +306,7 @@ def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_fil
             keep_session_alive(session_id,text="okay. was?",intent_filter=intent_filter,customData="media_selected")
     return
 def on_connect(client, userdata, flags, rc):
-    global is_injected
+    #global is_injecting
     global myintents
     print(("Connected to {0} with result code {1}".format(MQTT_HOST, rc)))
     client.subscribe("hermes/injection/complete")
@@ -317,7 +320,7 @@ def on_connect(client, userdata, flags, rc):
     connected=kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
     if connected:
         start_session(session_type="notification", intent_filter="",\
-                      text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
+                      text="Bitte warten, die Kodi Datenbank wird jetzt in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
                       customData="", site_id="rpiz1.zuhause.xx")
         inject()
 
@@ -326,6 +329,7 @@ def on_message(client, userdata, msg):
     global is_in_session
     #global is_injecting
     global is_injected
+    global status
     if msg.topic == 'hermes/injection/complete':
         is_injected=1
         start_session(session_type="notification", intent_filter="",\
@@ -337,7 +341,7 @@ def on_message(client, userdata, msg):
         ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        ausgabe('silent_mediaplay - is_in_session = {0}'.format(is_in_session),1)
+        ausgabe('silent_mediaplay - hotword detected - is_in_session = {0}'.format(is_in_session),1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
@@ -345,7 +349,7 @@ def on_message(client, userdata, msg):
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
         site_id= payload['siteId']
-        ausgabe('siteId:'+str(site_id)+' -- sessionId:'+str(session_id),0)
+        ausgabe('Session Ended on : siteId='+str(site_id)+' -- sessionId='+str(session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
@@ -358,20 +362,19 @@ def on_message(client, userdata, msg):
                 kodi.resume()
             playing_state_old = 0
         elif kodi.check_connectivity() and is_in_session:
-            #status=0
-            #status=kodi.get_running_state()
-            #if status:
-            if kodi.get_running_state():
+            status=0
+            status=kodi.get_running_state()
+            if status:
+            #if kodi.get_running_state():
                 #ausgabe('Kodi-Status:'+status,2)
-                ausgabe('Kodi-Status : ',2)
+                ausgabe('Kodi-Status : {0}'.format(status),2)
                 end_navigator(session_id="",site_id=side_id)
             else:
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
                               '"'+snipsuser+'kodiWindowNavigation", "'+snipsuser+'search_album",'\
                               '"'+snipsuser+'search_artist","'+snipsuser+'search_movie",'\
-                              '"'+snipsuser+'search_show","'+snipsuser+'search_genre",'\
+                              '"'+snipsuser+'search_show","'+snipsuser+'search_genre"'\
                               ,customData="kodi_navigation",site_id=site_id)
-                #ausgabe(Navigator)
     elif msg.topic == 'hermes/asr/textCaptured':
         #checks for captured text to end session immediately if it is empty
         payload = json.loads(msg.payload.decode())
@@ -403,6 +406,7 @@ def on_message(client, userdata, msg):
         #added siteId to invest who was the sending satellite
         ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
                 .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
+        ausgabe('Anfang Intent Loop')
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
@@ -671,7 +675,7 @@ def on_message(client, userdata, msg):
                     '''
                     hey snips starte partymode, partymode an
                     slotname: none
-                    slotvalue:
+                    slotvalue: none
                     '''
                     start_partymode(session_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'play_tv':
