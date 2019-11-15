@@ -315,7 +315,6 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe('hermes/dialogueManager/#')
     client.subscribe('hermes/asr/textCaptured')
     connected=kodi.init(kodi_user,kodi_pw,kodi_ip,kodi_port,debuglevel)
-    #print(connected)
     if connected:
         start_session(session_type="notification", intent_filter="",\
                       text="Bitte warten, es werden jetzt die Namen der Serien Filme Interpreten Alben und Genres in Snips injiziert. Dieser Vorgang dauert etwa 30 sekunden.",\
