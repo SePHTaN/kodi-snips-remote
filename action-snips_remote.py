@@ -86,7 +86,7 @@ def inject():
     return
 def start_navigator(session_id,site_id="default"):
     #start a snips session loop so that the hotword is not necessary. this is for controll the kodi menue.
-    ausgabe('start_navigator',1)
+    #ausgabe('start_navigator',1)
     global is_in_session
     is_in_session = 1
     client.publish("hermes/feedback/sound/toggleOff",'{"siteId":"'+site_id+'"}')
@@ -94,7 +94,7 @@ def start_navigator(session_id,site_id="default"):
     return
 def end_navigator(session_id="",site_id="default"):
     #ends the session loop
-    ausgabe('end_navigator',1)
+    #ausgabe('end_navigator',1)
     global is_in_session
     is_in_session = 0
     if session_id == "":
@@ -139,15 +139,15 @@ def kodi_navigation_gui(slotvalue,session_id):
         filtervalue="addons://user/"
     else:
         window = slotvalue
-        print("kodi_navigation_gui: window=",window)
+        #print("kodi_navigation_gui: window=",window)
     kodi.open_gui(window=window,filtervalue=filtervalue)
     if session_id != "":
-        ausgabe('Navigation_gui - end sessionId = {0}'.format(session_id),2)
+        #ausgabe('Navigation_gui - end sessionId = {0}'.format(session_id),2)
         end_session(session_id)
     return
 def start_session(session_type="action",text="",intent_filter="",customData="",site_id="default"):
     #starts a snips session as notification or as action. also adds custom data to session
-    ausgabe("start_session",1)
+    #ausgabe("start_session",1)
     data = ""
     cdata =""
     data = data + ',"text":"'+text+'"'
@@ -162,7 +162,7 @@ def start_session(session_type="action",text="",intent_filter="",customData="",s
     return
 def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     #keeps the snips session running with or without tts. also adds custom data to session
-    ausgabe('keep_session_alive: '+session_id,1)
+    #ausgabe('keep_session_alive: '+session_id,1)
     data = ""
     data = data + ',"text":"'+text+'"'
     if intent_filter!="":
@@ -174,16 +174,16 @@ def keep_session_alive(session_id,text="",intent_filter="",customData=""):
     return
 def end_session(session_id,text=""):
     #ends a snips session with or without tts
-    ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
+    #ausgabe('end_session - sessionId:"{0}"'.format(session_id),1)
     if text!="":
         text = ',"text":"'+text+'"'
     client.publish("hermes/dialogueManager/endSession",'{"sessionId":"'+session_id+'"'+text+'}')
     return
 def search(slotvalue,slotname,json_d,site_id):
     #check if word is in titles of the kodi library. e.g. marvel will be in more than 1 title. if found it will display it in kodi
-    ausgabe("search",1)
+    #ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
-    ausgabe('Titel/Genres gefunden : "{0}"'.format(titles),2)
+    #ausgabe('Titel/Genres gefunden : "{0}"'.format(titles),2)
     if len(titles) ==0:
         start_session(session_type="notification", text="keine medien gefunden",site_id=site_id)
     elif len(titles) >=1:
@@ -232,8 +232,8 @@ def start_partymode(session_id):
     kodi.stop()
     #ausgabe('wieder in start_partymode',2)
     kodi.partymode_playlist()
-    ausgabe('Partymode - sessionId = {0}'.format(session_id),2)
-    #time.sleep(1) erst time importieren? in kodi.py dann auch ?
+    #ausgabe('Partymode - sessionId = {0}'.format(session_id),2)
+    #time.sleep(1) #erst time importieren? in kodi.py dann auch ?
     kodi_navigation_gui("visualisation",session_id)
     return
 def main_controller(slotvalue,slotname,id_slot_name,json_d,session_id,intent_filter,israndom,playlistid,site_id):
@@ -335,13 +335,13 @@ def on_message(client, userdata, msg):
         start_session(session_type="notification", intent_filter="",\
                       text="Kodi Remote für Snips ist jetzt bereit.",\
                       customData="", site_id="rpiz1.zuhause.xx")
-        ausgabe('injection erfolgreich beendet',0)
+        #ausgabe('injection erfolgreich beendet',0)
     if msg.topic != 'hermes/audioServer/default/audioFrame':
         payload = json.loads(msg.payload.decode())
-        ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
+        #ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        ausgabe('silent_mediaplay - hotword detected - is_in_session = {0}'.format(is_in_session),1)
+        #ausgabe('silent_mediaplay - hotword detected - is_in_session = {0}'.format(is_in_session),1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
@@ -349,14 +349,14 @@ def on_message(client, userdata, msg):
         payload = json.loads(msg.payload.decode())
         session_id= payload['sessionId']
         site_id= payload['siteId']
-        ausgabe('Session Ended on : siteId='+str(site_id)+' -- sessionId='+str(session_id),0)
+        #ausgabe('Session Ended on : siteId='+str(site_id)+' -- sessionId='+str(session_id),0)
         '''
         if session ended return to kodi playing state. check if not in kodi navigator session so kodi keeps on pause while navigating.
         also check current playing state so kodi wont return to play when "hey snips kodi pause"
         check for is_in_session to end kodi navigator when asked or start a new session for navigator session loop
         '''
         if kodi.check_connectivity() and not is_in_session:
-            ausgabe('reset_mediaplay',1)
+            #ausgabe('reset_mediaplay',1)
             playing_state_current = kodi.get_running_state()
             if playing_state_old == 1 and playing_state_current == 0:
                 kodi.resume()
@@ -367,7 +367,7 @@ def on_message(client, userdata, msg):
             if status:
             #if kodi.get_running_state():
                 #ausgabe('Kodi-Status:'+status,2)
-                ausgabe('Kodi-Status : {0}'.format(status),2)
+                #ausgabe('Kodi-Status : {0}'.format(status),2)
                 end_navigator(session_id="",site_id=side_id)
             else:
                 start_session(intent_filter='"'+snipsuser+'kodiNavigator","'+snipsuser+'kodiInputNavigation",'\
@@ -404,9 +404,9 @@ def on_message(client, userdata, msg):
         site_id= payload['siteId']
         custom_data = payload['customData']
         #added siteId to invest who was the sending satellite
-        ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
+        #ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
                 .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
-        ausgabe('Anfang Intent Loop')
+        #ausgabe('Anfang Intent Loop')
         if kodi.check_connectivity():
             #check if kodi is online else end session
             #first check for intents which can require the session to keep alive or start a new session with tts
