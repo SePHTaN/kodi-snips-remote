@@ -182,7 +182,7 @@ def search(slotvalue,slotname,json_d,site_id):
     #check if word is in titles of the kodi library. e.g. marvel will be in more than 1 title. if found it will display it in kodi
     ausgabe("search",1)
     titles = kodi.find_title(slotvalue,json_d)
-    ausgabe('Titel/Genres gefunden : '+titles,2)
+    ausgabe('Titel/Genres gefunden : "{0}"'.format(titles),2)
     if len(titles) ==0:
         start_session(session_type="notification", text="keine medien gefunden",site_id=site_id)
     elif len(titles) >=1:
@@ -227,8 +227,9 @@ def start_playlist(playlist, playlistid):
     kodi.add_playlist(playlist,playlistid)
     kodi.start_play(playlistid)
     return
-def start_partymode():
+def start_partymode(session_id):
     kodi.stop()
+    ausgabe('wieder in start_partymode',2)
     kodi_navigation_gui("visualisation",session_id)
     kodi.partymode_playlist()
     return
@@ -673,7 +674,7 @@ def on_message(client, userdata, msg):
                     slotname: none
                     slotvalue:
                     '''
-                    start_partymode()
+                    start_partymode(session_id)
                 elif msg.topic == 'hermes/intent/'+snipsuser+'play_tv':
                     '''
                     hey snips spiele fernseher ab
