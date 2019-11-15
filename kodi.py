@@ -31,10 +31,10 @@ def send(g_data,isfilter=0,all_data="",caller=""): #added caller=""  for JSON-St
     else:
         data = all_data
     try:
-        ausgabe(caller+': '+data,1)
+        #ausgabe(caller+': '+data,1)
         response = requests.post(kodi_url, headers=headers, data=data)
         json_obj= response.text
-        ausgabe('Send: Response JSON-OBJ = ' + json_obj,2)
+        #ausgabe('Send: Response JSON-OBJ = ' + json_obj,2)
         json_data = json.loads(json_obj)
         if all_data != "":
             return json_data
@@ -248,10 +248,10 @@ def get_properties():
         return(json)
     return
 def get_running_state():
-    ausgabe('get_running_state',1)
+    #ausgabe('get_running_state',1)
     state = 0
     json_state = get_properties()
-    ausgabe('Player-Properties : {0}'.format(json_state),2)
+    #ausgabe('Player-Properties : {0}'.format(json_state),2)
     if json_state:
         if json_state['speed'] == 1:
             state=1
@@ -273,7 +273,7 @@ def resume():
         send(data,1,'','resume')
     return
 def pause():
-    ausgabe('pause',1)
+    #ausgabe('pause',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.PlayPause"'
@@ -282,7 +282,7 @@ def pause():
         send(data,1,'','pause')
     return
 def stop():
-    ausgabe('stop',1)
+    #ausgabe('stop',1)
     json_data = get_active_player()
     if json_data != [] and json_data:
         data_method= '"method":"Player.Stop"'
