@@ -11,7 +11,7 @@ playing_state_old = 0
 is_in_session=0
 is_injecting=0
 is_injected=0
-status=0
+#status=0
 
 #snips username with ':' or '__'
 snipsuser = "Sysiphus:"
@@ -338,7 +338,7 @@ def on_message(client, userdata, msg):
         ausgabe('"{0}" - "{1}"'.format(msg.topic,payload),0)
     if msg.topic == 'hermes/hotword/default/detected':
         #when hotword is detected pause kodi player for better understanding. check if kodi is online, kodi is playing, not in kodi navigator session
-        ausgabe('silent_mediaplay - is_in_session = '+is_in_session,1)
+        ausgabe('silent_mediaplay - is_in_session = {0}'.format(is_in_session),1)
         if kodi.check_connectivity() and kodi.get_running_state() and not is_in_session:
             kodi.pause()
             playing_state_old = 1
