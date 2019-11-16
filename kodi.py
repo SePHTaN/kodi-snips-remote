@@ -309,6 +309,38 @@ def partymode_playlist():
     data = data_method + data_prop
     send(data,1,'','partymode_playlist')
     return
+def get_subtitles():
+    #ausgabe('get_subtitles',1)
+    player_id = get_active_player()
+    if player_id:
+        data_method= '"method":"Player.GetProperties"'
+        data_prop = ',"params":['+str(player_id['playerid'])+',["subtitles","currentsubtitle"]]'
+        data = data_method + data_prop
+        json = send(data,1,'','get_subtitles')
+    return(player_id,json)
+def set_subtitles(state):
+    #ausgabe('set_subtitles',1)
+    data_method= '"method":"Player.SetSubtitle"'
+    data_prop = ',"params":{"playerid":'+str(json_data['playerid'])+',"subtitle":"'+state+'"}'
+    data = data_method + data_prop
+    send(data,1,'','set_subtitles')
+    return
+def subtitles_next(state):
+    #ausgabe('subtitles_next',1)
+    player_id, json_data = get_subtitles()
+    if json_data != [] and json_data:
+        subtitle_is = json_data['currentsubtitle']
+        subtitles_count = len(jsondata['subtitles'])
+        if state=="next" and subtitle_is < subtitles_count-1:
+            set_subtitle(state)
+        elif state=="previous" and subtitle_is > 0:
+            set_subtitle(state)
+        else:
+            setstate = "off"
+            if state == "true":
+                setstate = "on"
+            set_subtitle(setstate)
+    return
 def subtitles(state):
     #ausgabe('subtitles',1)
     setstate = "off"
