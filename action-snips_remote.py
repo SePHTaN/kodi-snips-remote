@@ -405,7 +405,7 @@ def on_message(client, userdata, msg):
         custom_data = payload['customData']
         #added siteId to invest who was the sending satellite
         #ausgabe('"{0}" \n   -- "{1}":"{2}"\n   -- "customData":"{3}"\n   -- "{4}" wiedergabe \n   -- "sessionId":"{5}"\n   -- "siteId"   :"{6}"'\
-                .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
+        #        .format(name, slotname, slotvalue, custom_data, slotisrandom,session_id,site_id),0) # 0-->1
         #ausgabe('Anfang Intent Loop')
         if kodi.check_connectivity():
             #check if kodi is online else end session
